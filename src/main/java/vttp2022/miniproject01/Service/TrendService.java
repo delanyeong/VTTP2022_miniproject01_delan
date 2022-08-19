@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -27,7 +28,7 @@ public class TrendService {
     @Autowired
     private MovieRepository movieRepo;
 
-    private static final String URL = "https://api.themoviedb.org/3/trending/all/day";
+    private static final String URL = "https://api.themoviedb.org/3/trending/movie/day";
 
     @Value("${API_KEY}")
     private String key;

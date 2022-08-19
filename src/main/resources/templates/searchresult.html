@@ -7,7 +7,7 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Trending Page</h1>
+    <h1>Search Results</h1>
     <div data-th-each="w: ${searchMovieList}">
         <!-- <img data-th-src="@{${w.poster_path}}" alt=""> -->
         <img data-th-src="@{https://image.tmdb.org/t/p/w300{poster_path}(poster_path=${w.poster_path})}" alt="">

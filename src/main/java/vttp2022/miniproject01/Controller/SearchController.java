@@ -2,6 +2,8 @@ package vttp2022.miniproject01.Controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,11 +33,13 @@ public class SearchController {
     // @RequestParam String language,
     // @RequestParam Boolean include_adult,
     // @RequestParam Integer year,
-    Model model) {
+    Model model,
+    HttpSession sess) {
 
         // List<Movie> searchMovieList = searchSvc.searchMovies(language, query, include_adult, year);
         List<Movie> searchMovieList = searchSvc.searchMovies(query);
 
+        sess.setAttribute("movies", searchMovieList);
         model.addAttribute("searchMovieList", searchMovieList);
 
         return "searchresult";
