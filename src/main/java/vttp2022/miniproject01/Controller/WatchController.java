@@ -24,7 +24,11 @@ public class WatchController {
     private WatchService watchSvc;
     
     @GetMapping
-    public String watchlistpage () {
+    public String watchlistpage (Model model) {
+
+        List<Movie> watchlistmovies = watchSvc.get();
+
+        model.addAttribute("moviesToSave", watchlistmovies);
         return "watchlistpage";
     }
 
@@ -34,12 +38,15 @@ public class WatchController {
     Model model,
     HttpSession sess) {
         
+        //takes list of movies saved from Session
         List<Movie> savedMovieList = (List<Movie>)sess.getAttribute("movies");
 
+        //gets list of Ids from form 
         List<String> saveIds = form.get("movieId");
 
         System.out.println(">>>>>>>>>>>>>>>>>>>>>>" + saveIds);
 
+        //create new list of movies from list of movies based on list of Ids
         List<Movie> moviesToSave = savedMovieList.stream()
             .filter(movieObj -> {
                 for (String i: saveIds) {
@@ -51,11 +58,13 @@ public class WatchController {
             })
             .toList();
 
+        //save new list of movies to Repo if it's not empty
         if (moviesToSave.size() > 0) {
             watchSvc.save(moviesToSave);
         }
 
-        model.addAttribute("savedMovieList", savedMovieList);
+        //return new list of movies to MVC model
+        model.addAttribute("moviesToSave", moviesToSave);
         return "watchlistpage";
 
     }
