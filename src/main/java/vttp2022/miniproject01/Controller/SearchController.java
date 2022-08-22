@@ -1,9 +1,7 @@
 package vttp2022.miniproject01.Controller;
 
 import java.util.List;
-
 import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import vttp2022.miniproject01.Model.Movie;
 import vttp2022.miniproject01.Service.SearchService;
 
@@ -32,18 +29,15 @@ public class SearchController {
     (@RequestParam String query,
     Model model,
     HttpSession sess) {
-        
         List<Movie> searchMovieList = searchSvc.searchMovies(query);
-        
         sess.setAttribute("movies", searchMovieList);
         model.addAttribute("searchMovieList", searchMovieList);
-        
         return "searchresult";
     }
     
-    @PostMapping (path="recentsave")
-    public String forwardToSave () {
-        return "forward:/watchlist/recentsave";
+    @PostMapping (path="savesearch")
+    public String forwardToWatchlist () {
+        return "forward:/savetrend";
     }
 
 }

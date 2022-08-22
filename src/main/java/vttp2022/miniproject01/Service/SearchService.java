@@ -5,7 +5,6 @@ import java.io.StringReader;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.RequestEntity;
@@ -13,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
@@ -32,15 +30,11 @@ public class SearchService {
 
     private static final String URL = "https://api.themoviedb.org/3/search/movie";
 
-    // public List<Movie> searchMovies (String language, String query, Boolean include_adult, Integer year) {
     public List<Movie> searchMovies (String query) {
 
         //Create the url with query string with ucbuilder
         String url = UriComponentsBuilder.fromUriString(URL)
         .queryParam("query", query)
-        // .queryParam("language", language)
-        // .queryParam("include_adult", include_adult)
-        // .queryParam("year", year)
         .queryParam("api_key", key)
         .toUriString();
 
@@ -68,14 +62,11 @@ public class SearchService {
 
         List<Movie> searchMovieList = new LinkedList<>();
         for (int i = 0; i < searchMovieData.size(); i++) {
-            //data[i]
             JsonObject searchDataElem = searchMovieData.getJsonObject(i);
-            
             searchMovieList.add(Movie.create(searchDataElem));
         }
 
         return searchMovieList;
-
     }
 
 }

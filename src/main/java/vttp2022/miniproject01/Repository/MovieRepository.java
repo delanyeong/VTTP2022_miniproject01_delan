@@ -5,13 +5,11 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
-
 import vttp2022.miniproject01.Model.Movie;
 
 @Repository
@@ -36,9 +34,7 @@ public class MovieRepository {
     public void saveList1 (List<Movie> savedWatchList) {
         String keyName = "savedWatchList";
         ListOperations<String, String> listOp = template.opsForList();
-        // for (Movie movie : savedWatchList) {
-        //     listOp.rightPush(keyName, movie.toJson().toString());
-        // }
+        
         List<String> savedWatchlistStrings = new LinkedList<>();
         for (Movie movie : savedWatchList) {
             savedWatchlistStrings.add(movie.toJson().toString());
@@ -47,8 +43,6 @@ public class MovieRepository {
         for (String movie : savedWatchlistStrings) {
             listOp.rightPush(keyName, movie);
         }
-            
-        
     }
 
     public void saveList2 (List<Movie> savedWatchList) {
@@ -78,12 +72,6 @@ public class MovieRepository {
         for (Movie movie : redisMovies) {
             listOp.rightPush(keyName, movie.toJson().toString());
         }
-        
-
-
-        // for (Movie movie : savedWatchList) {
-        //     listOp.rightPush("savedWatchList", movie.getId());
-        // }
     }
 
     public List<Movie> get () {

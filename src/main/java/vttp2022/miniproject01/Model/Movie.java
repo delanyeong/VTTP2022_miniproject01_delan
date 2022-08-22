@@ -1,10 +1,7 @@
 package vttp2022.miniproject01.Model;
 
 import java.io.StringReader;
-import java.math.BigDecimal;
-
 import jakarta.json.Json;
-import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
 
@@ -31,7 +28,6 @@ public class Movie {
     public String getRelease_date() {return release_date;}
     public void setRelease_date(String release_date) {this.release_date = release_date;}
 
-
     
     public static Movie create(String jsonStr) {
         StringReader strReader = new StringReader(jsonStr);
@@ -41,7 +37,6 @@ public class Movie {
     
     public static Movie create(JsonObject trendDataElem) {
         Movie mo = new Movie();
-
         mo.setId(Integer.toString(trendDataElem.getInt("id")));
         mo.setTitle(trendDataElem.getString("title", "Movie Title"));
         mo.setOverview(trendDataElem.getString("overview"));
