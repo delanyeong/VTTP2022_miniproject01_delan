@@ -35,19 +35,15 @@ public class MovieRepository {
         String keyName = "savedWatchList";
         ListOperations<String, String> listOp = template.opsForList();
         
-        List<String> savedWatchlistStrings = new LinkedList<>();
         for (Movie movie : savedWatchList) {
-            savedWatchlistStrings.add(movie.toJson().toString());
-        }
-
-        for (String movie : savedWatchlistStrings) {
-            listOp.rightPush(keyName, movie);
+            listOp.rightPush(keyName, movie.toJson().toString());
         }
     }
 
     public void saveList2 (List<Movie> savedWatchList) {
         String keyName = "savedWatchList";
         ListOperations<String, String> listOp = template.opsForList();
+
         List<Movie> redisMovies = new LinkedList<>();
 
         for (int i = 0; i < listOp.size(keyName); i++) {
