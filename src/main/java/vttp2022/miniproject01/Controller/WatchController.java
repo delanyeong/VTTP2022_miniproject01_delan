@@ -32,7 +32,7 @@ public class WatchController {
         return "watchlistpage";
     }
 
-    @PostMapping
+    @PostMapping (path="recentsave")
     public String postMovies
     (@RequestBody MultiValueMap<String, String> form,
     Model model,
@@ -65,7 +65,7 @@ public class WatchController {
 
         //return new list of movies to MVC model
         model.addAttribute("moviesToSave", moviesToSave);
-        return "watchlistpage";
+        return "recentsave";
 
     }
 

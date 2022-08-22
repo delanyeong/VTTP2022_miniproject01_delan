@@ -7,16 +7,9 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Trending Page</h1>
-
-    <form method="POST" action="watchlist/recentsave">
-
-        <div> 
-            <button type="submit">Save</button> 
-            <button type="submit" formmethod="GET" formaction="">Refresh</button>
-        </div>
+    <h1>My Watch List</h1>
         
-        <div data-th-each="w: ${trendMovieList}">
+        <div data-th-each="w: ${moviesToSave}">
 
             <table>
                 <tr>
@@ -33,23 +26,13 @@
                         <p data-th-text="${w.overview}"></p>
 
                         <p> Published On: <i data-th-text="${w.release_date}"></i> </p>
-                        <p>
-                            Save: <input type="checkbox" name="movieId" data-th-value="${w.id}" >
-                        </p>
+                        
                     </td>
                 </tr>
             </table>
 
             
-            <!-- <img data-th-src="@{${w.poster_path}}" alt=""> -->
-            <!-- <img data-th-src="@{https://image.tmdb.org/t/p/w300{poster_path}(poster_path=${w.poster_path})}" alt=""> -->
-            <!-- <h2 data-th-text="${w.poster_path}" alt=""></h2> -->
-            <!-- <h2 data-th-text="${w.title}" alt=""></h2> -->
-            <!-- <h2 data-th-text="${w.title}" alt=""></h2> -->
+            
         </div>
-
-        
-
-    </form>
 </body>
 </html>

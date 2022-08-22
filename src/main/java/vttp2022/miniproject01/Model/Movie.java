@@ -49,6 +49,23 @@ public class Movie {
         return mo;
     }
 
+
+    public static Movie create2(String jsonStr) {
+        StringReader strReader = new StringReader(jsonStr);
+        JsonReader reader = Json.createReader(strReader);
+        return create2(reader.readObject());
+    }
+    
+    public static Movie create2(JsonObject trendDataElem) {
+        Movie mo = new Movie();
+        mo.setId(trendDataElem.getString("id"));
+        mo.setTitle(trendDataElem.getString("title", "Movie Title"));
+        mo.setOverview(trendDataElem.getString("overview"));
+        mo.setPoster_path(trendDataElem.getString("poster_path"));
+        mo.setRelease_date(trendDataElem.getString("release_date", "Release Date"));
+        return mo;
+    }
+
     public JsonObject toJson () {
         return Json.createObjectBuilder()
 			.add("id", this.id)
@@ -57,14 +74,6 @@ public class Movie {
 			.add("poster_path", this.poster_path)
 			.add("release_date", this.release_date)
 			.build();
-    }
-
-    
-
-    @Override
-    public String toString() {
-        return "Movie [id=" + id + ", overview=" + overview + ", poster_path=" + poster_path + ", release_date="
-                + release_date + ", title=" + title + "]";
     }
 
     
