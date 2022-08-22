@@ -24,25 +24,26 @@ public class SearchController {
     
     @GetMapping
     public String searchPage () {
-        return "searchpage";
+        return "searchresult";
     }
 
     @GetMapping (path="movie")
     public String searchMovies
     (@RequestParam String query,
-    // @RequestParam String language,
-    // @RequestParam Boolean include_adult,
-    // @RequestParam Integer year,
     Model model,
     HttpSession sess) {
-
-        // List<Movie> searchMovieList = searchSvc.searchMovies(language, query, include_adult, year);
+        
         List<Movie> searchMovieList = searchSvc.searchMovies(query);
-
+        
         sess.setAttribute("movies", searchMovieList);
         model.addAttribute("searchMovieList", searchMovieList);
-
+        
         return "searchresult";
+    }
+    
+    @PostMapping (path="recentsave")
+    public String forwardToSave () {
+        return "forward:/watchlist/recentsave";
     }
 
 }

@@ -7,6 +7,7 @@
     <title>Document</title>
 </head>
 <body>
+
     <h1>Trending Page</h1>
 
     <form method="POST" action="watchlist/recentsave">
@@ -17,7 +18,6 @@
         </div>
         
         <div data-th-each="w: ${trendMovieList}">
-
             <table>
                 <tr>
                     <td>
@@ -38,17 +38,8 @@
                         </p>
                     </td>
                 </tr>
-            </table>
-
-            
-            <!-- <img data-th-src="@{${w.poster_path}}" alt=""> -->
-            <!-- <img data-th-src="@{https://image.tmdb.org/t/p/w300{poster_path}(poster_path=${w.poster_path})}" alt=""> -->
-            <!-- <h2 data-th-text="${w.poster_path}" alt=""></h2> -->
-            <!-- <h2 data-th-text="${w.title}" alt=""></h2> -->
-            <!-- <h2 data-th-text="${w.title}" alt=""></h2> -->
+            </table>            
         </div>
-
-        
 
     </form>
 </body>

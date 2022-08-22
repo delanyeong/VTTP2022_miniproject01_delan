@@ -7,13 +7,45 @@
     <title>Document</title>
 </head>
 <body>
+
+    <form method="GET" action="/search/movie">
+        <div>Search:<input type="text" name="query"></div>
+        <button type="submit">submit</button>
+    </form>
+
     <h1>Search Results</h1>
-    <div data-th-each="w: ${searchMovieList}">
-        <!-- <img data-th-src="@{${w.poster_path}}" alt=""> -->
-        <img data-th-src="@{https://image.tmdb.org/t/p/w300{poster_path}(poster_path=${w.poster_path})}" alt="">
-        <!-- <h2 data-th-text="${w.poster_path}" alt=""></h2> -->
-        <!-- <h2 data-th-text="${w.title}" alt=""></h2> -->
-        <!-- <h2 data-th-text="${w.title}" alt=""></h2> -->
-    </div>
+    <form method="POST" action="recentsave">
+
+        <div> 
+            <button type="submit">Save</button> 
+            <button type="submit" formmethod="GET" formaction="">Refresh</button>
+        </div>
+
+        <div data-th-each="w: ${searchMovieList}">
+            <table>
+                <tr>
+                    <td>
+                        <img data-th-src="@{https://image.tmdb.org/t/p/w300{poster_path}(poster_path=${w.poster_path})}" alt="">
+                    </td>
+                    <td>
+                        <a>
+                            <h3 data-th-text="${w.title}"></h3>
+                        </a>
+
+                        <p>Id: <code data-th-text="${w.id}"></code></p>
+
+                        <p data-th-text="${w.overview}"></p>
+
+                        <p> Published On: <i data-th-text="${w.release_date}"></i> </p>
+                        <p>
+                            Save: <input type="checkbox" name="movieId" data-th-value="${w.id}" >
+                        </p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </form>
+
+
 </body>
 </html>

@@ -8,31 +8,32 @@
 </head>
 <body>
     <h1>My Watch List</h1>
-        
-        <div data-th-each="w: ${moviesToSave}">
 
-            <table>
-                <tr>
-                    <td>
-                        <img data-th-src="@{https://image.tmdb.org/t/p/w300{poster_path}(poster_path=${w.poster_path})}" alt="">
-                    </td>
-                    <td>
-                        <a>
-                            <h3 data-th-text="${w.title}"></h3>
-                        </a>
+    <div data-th-each="w: ${moviesToSave}">
 
-                        <p>Id: <code data-th-text="${w.id}"></code></p>
+        <table>
+            <tr>
+                <td>
+                    <img data-th-src="@{https://image.tmdb.org/t/p/w300{poster_path}(poster_path=${w.poster_path})}"
+                        alt="">
+                </td>
+                <td>
+                    <a>
+                        <h3 data-th-text="${w.title}"></h3>
+                    </a>
 
-                        <p data-th-text="${w.overview}"></p>
+                    <p>Id: <code data-th-text="${w.id}"></code></p>
 
-                        <p> Published On: <i data-th-text="${w.release_date}"></i> </p>
-                        
-                    </td>
-                </tr>
-            </table>
+                    <p data-th-text="${w.overview}"></p>
 
-            
-            
-        </div>
+                    <p> Published On: <i data-th-text="${w.release_date}"></i> </p>
+
+                </td>
+            </tr>
+        </table>
+
+
+
+    </div>
 </body>
 </html>

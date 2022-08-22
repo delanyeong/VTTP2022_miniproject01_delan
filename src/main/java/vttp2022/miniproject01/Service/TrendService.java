@@ -68,7 +68,6 @@ public class TrendService {
         for (int i = 0; i < trendMovieData.size(); i++) {
             //data[i]
             JsonObject trendDataElem = trendMovieData.getJsonObject(i);
-            // JsonArray genre_ids = trendDataElem.getJsonArray("genre_ids");
             
             trendMovieList.add(Movie.create(trendDataElem));
         }

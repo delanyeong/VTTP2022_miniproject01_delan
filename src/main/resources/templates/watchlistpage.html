@@ -7,10 +7,10 @@
     <title>Document</title>
 </head>
 <body>
+
     <h1>My Watch List</h1>
         
         <div data-th-each="w: ${moviesToSave}">
-
             <table>
                 <tr>
                     <td>
@@ -26,13 +26,9 @@
                         <p data-th-text="${w.overview}"></p>
 
                         <p> Published On: <i data-th-text="${w.release_date}"></i> </p>
-                        
                     </td>
                 </tr>
-            </table>
-
-            
-            
+            </table>    
         </div>
 </body>
 </html>

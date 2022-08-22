@@ -70,7 +70,6 @@ public class SearchService {
         for (int i = 0; i < searchMovieData.size(); i++) {
             //data[i]
             JsonObject searchDataElem = searchMovieData.getJsonObject(i);
-            // JsonArray genre_ids = trendDataElem.getJsonArray("genre_ids");
             
             searchMovieList.add(Movie.create(searchDataElem));
         }

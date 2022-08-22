@@ -41,10 +41,11 @@ public class Movie {
     
     public static Movie create(JsonObject trendDataElem) {
         Movie mo = new Movie();
+
         mo.setId(Integer.toString(trendDataElem.getInt("id")));
         mo.setTitle(trendDataElem.getString("title", "Movie Title"));
         mo.setOverview(trendDataElem.getString("overview"));
-        mo.setPoster_path(trendDataElem.getString("poster_path"));
+        mo.setPoster_path(trendDataElem.getString("poster_path", "Movie Poster"));
         mo.setRelease_date(trendDataElem.getString("release_date", "Release Date"));
         return mo;
     }
