@@ -74,7 +74,7 @@ public class MovieService {
     
     public void save (List<Movie> savedMovieList) {
         movieRepo.save(savedMovieList);
-        movieRepo.saveList1(savedMovieList);
+        movieRepo.saveList2(savedMovieList);
         System.out.println("saved");
     }
     

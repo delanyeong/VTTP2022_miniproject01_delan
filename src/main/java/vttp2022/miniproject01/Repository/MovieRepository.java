@@ -31,42 +31,51 @@ public class MovieRepository {
         }
     }
 
-    public void saveList1 (List<Movie> savedWatchList) {
-        String keyName = "savedWatchList";
-        ListOperations<String, String> listOp = template.opsForList();
+    // public void saveList1 (List<Movie> savedWatchList) {
+    //     String keyName = "savedWatchList";
+    //     ListOperations<String, String> listOp = template.opsForList();
         
-        for (Movie movie : savedWatchList) {
-            listOp.rightPush(keyName, movie.toJson().toString());
-        }
-    }
+    //     for (Movie movie : savedWatchList) {
+    //         listOp.rightPush(keyName, movie.toJson().toString());
+    //     }
+    // }
+
 
     public void saveList2 (List<Movie> savedWatchList) {
         String keyName = "savedWatchList";
         ListOperations<String, String> listOp = template.opsForList();
 
-        List<Movie> redisMovies = new LinkedList<>();
-
-        for (int i = 0; i < listOp.size(keyName); i++) {
-            redisMovies.add(Movie.create(listOp.index(keyName, i)));
-        }
-
-        for (Movie movie : savedWatchList) {
-            for (int i = 0; i < redisMovies.size(); i++) {
-                if (movie.getId() != redisMovies.get(i).getId()) {
-                    redisMovies.add(movie);
-                } else {
-                    continue;
-                }
-            }
-        }
-
         long l = listOp.size(keyName);
         if (l > 0) {
-            listOp.trim(keyName, 0, l);
-        }
+            
+            List<Movie> redisMovies = new LinkedList<>();
 
-        for (Movie movie : redisMovies) {
-            listOp.rightPush(keyName, movie.toJson().toString());
+            for (int i = 0; i < listOp.size(keyName); i++) {
+                redisMovies.add(Movie.create2(listOp.index(keyName, i)));
+            }
+
+            List<String> redisMoviesIds = new LinkedList<>();
+            for (Movie movie : redisMovies) {
+                redisMoviesIds.add(movie.getId());
+            }
+
+            for (Movie movie : savedWatchList) {
+                if (!(redisMoviesIds.contains(movie.getId()))) {
+                    redisMovies.add(movie);
+                }
+            }
+
+            for (Long i = listOp.size(keyName); i > 0; i--) {
+                listOp.rightPop(keyName);
+            }
+            
+            for (Movie movie : redisMovies) {
+                listOp.rightPush(keyName, movie.toJson().toString());
+            }
+        } else {
+            for (Movie movie : savedWatchList) {
+                listOp.rightPush(keyName, movie.toJson().toString());
+            }
         }
     }
 
