@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.ListOperations;
@@ -89,6 +91,23 @@ public class MovieRepository {
         }
 
         return redisMovies;
+    }
+
+    public Optional<Movie> getMovieId (String id) {
+        String keyName = "savedWatchList";
+        ListOperations<String, String> listOp = template.opsForList();
+        List<Movie> redisMovies = new LinkedList<>();
+
+        for (int i = 0; i < listOp.size(keyName); i++) {
+            redisMovies.add(Movie.create2(listOp.index(keyName, i)));
+        }
+
+        for (int i = 0; i < redisMovies.size(); i++) {
+            if (redisMovies.get(i).getId().equals(id)) {
+                return Optional.of(redisMovies.get(i));
+            }
+        }
+        return Optional.empty();
     }
 
 }

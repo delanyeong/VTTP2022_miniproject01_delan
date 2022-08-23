@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <h1>Trending Page</h1>
+
+    <form method="POST" action="savetrend">
+
+        <div> 
+            <button type="submit">Save</button> 
+            <button type="submit" formmethod="GET" formaction="">Refresh</button>
+        </div>
+        
+        <div>
+            <table>
+                <tr>
+                    <td>
+                        <img data-th-src="@{https://image.tmdb.org/t/p/w300{poster_path}(poster_path=${singlecontent.poster_path})}" alt="">
+                    </td>
+                    <td>
+                        <a>
+                            <h3 data-th-text="${singlecontent.title}"></h3>
+                        </a>
+
+                        <p>Id: <code data-th-text="${singlecontent.id}"></code></p>
+
+                        <p data-th-text="${singlecontent.overview}"></p>
+
+                        <p> Published On: <i data-th-text="${singlecontent.release_date}"></i> </p>
+                        <p>
+                            Save: <input type="checkbox" name="movieId" data-th-value="${singlecontent.id}" >
+                        </p>
+                    </td>
+                </tr>
+            </table>            
+        </div>
+
+    </form>
+</body>
+</html>

@@ -5,6 +5,8 @@ import java.io.StringReader;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.RequestEntity;
@@ -80,5 +82,9 @@ public class MovieService {
     
     public List<Movie> get () {
         return movieRepo.get();
+    }
+
+    public Optional<Movie> getMovieId (String id) {
+        return movieRepo.getMovieId(id);
     }
 }

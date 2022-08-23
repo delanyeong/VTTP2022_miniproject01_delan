@@ -1,12 +1,16 @@
 package vttp2022.miniproject01.Controller;
 
 import java.util.List;
+import java.util.Optional;
+
 import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -59,4 +63,36 @@ public class MovieController {
         return "redirect:/mywatchlist";
     }
 
+    @GetMapping (path="mywatchlist/{id}")
+    public String getWatchlistId
+    (@PathVariable String id, Model model) {
+        Optional<Movie> opt = movieSvc.getMovieId(id);
+
+        if (opt.isEmpty()) {
+            String errorMsg = "Cannot find article %s".formatted(id);
+            model.addAttribute("errormsg", errorMsg);
+        } else {
+            Movie movieById = opt.get();
+            model.addAttribute("singlecontent", movieById);
+        }
+
+        return "singlecontent";
+    }
+
+    @GetMapping (path="{id}")
+    public String getMovieId
+    (@PathVariable String id, Model model, HttpSession sess) {
+        List<Movie> savedMovieList = (List<Movie>)sess.getAttribute("movies"); //takes list of movies saved from Session
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>" + id);
+        List<Movie> singleMovie = savedMovieList.stream()                          //create new list of movies from list of movies based on list of Ids
+            .filter(movieObj -> {
+                    if (id.equals(movieObj.getId())) {
+                        return true;
+                    }
+                return false;
+            })
+            .toList();
+        model.addAttribute("singlecontent", singleMovie.get(0));
+        return "singlecontent";
+    }
 }
