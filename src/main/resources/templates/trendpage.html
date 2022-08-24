@@ -10,7 +10,9 @@
 
     <h1>Trending Page</h1>
 
-    <form method="POST" action="savetrend">
+    <form method="POST" action="/home/savetrend">
+
+        <input  type="hidden" name="name" data-th-value="${name}">
 
         <div> 
             <button type="submit">Save</button> 
@@ -21,7 +23,7 @@
             <table>
                 <tr>
                     <td>
-                        <a th:href="@{/{id}(id = ${w.id})}">
+                        <a th:href="@{home/{id}(id = ${w.id})}">
                         <img data-th-src="@{https://image.tmdb.org/t/p/w300{poster_path}(poster_path=${w.poster_path})}" alt="">
                         </a>
                     </td>

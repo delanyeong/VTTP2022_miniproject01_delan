@@ -21,18 +21,20 @@ public class MovieRepository {
     @Qualifier("redislab")
     private RedisTemplate<String, String> template;
     
-    public void save (List<Movie> savedWatchlist) {
-        Map<String, String> map = new HashMap<>();
-        for (Movie mo : savedWatchlist) {
-            map.put(mo.getId(), mo.toJson().toString());
-        }
-        template.opsForValue().multiSet(map);
+    // JUST FOR TESTING
+    // public void save (List<Movie> savedWatchlist) {
+    //     Map<String, String> map = new HashMap<>();
+    //     for (Movie mo : savedWatchlist) {
+    //         map.put(mo.getId(), mo.toJson().toString());
+    //     }
+    //     template.opsForValue().multiSet(map);
 
-        for (String id : map.keySet()) {
-            template.expire(id, Duration.ofMinutes(5));
-        }
-    }
+    //     for (String id : map.keySet()) {
+    //         template.expire(id, Duration.ofMinutes(5));
+    //     }
+    // }
 
+    // saveList1 IS ADDING W/O CHECKING FOR REPEATS
     // public void saveList1 (List<Movie> savedWatchList) {
     //     String keyName = "savedWatchList";
     //     ListOperations<String, String> listOp = template.opsForList();
@@ -42,9 +44,48 @@ public class MovieRepository {
     //     }
     // }
 
+    // Version 1 - saveList2 (IS ADDING W CHECKING FOR REPEATS (W/O USER))
+    // public void saveList2 (List<Movie> savedWatchList) {
+    //     String keyName = "savedWatchList";
+    //     ListOperations<String, String> listOp = template.opsForList();
 
-    public void saveList2 (List<Movie> savedWatchList) {
-        String keyName = "savedWatchList";
+    //     long l = listOp.size(keyName);
+    //     if (l > 0) {
+            
+    //         List<Movie> redisMovies = new LinkedList<>();
+
+    //         for (int i = 0; i < listOp.size(keyName); i++) {
+    //             redisMovies.add(Movie.create2(listOp.index(keyName, i)));
+    //         }
+
+    //         List<String> redisMoviesIds = new LinkedList<>();
+    //         for (Movie movie : redisMovies) {
+    //             redisMoviesIds.add(movie.getId());
+    //         }
+
+    //         for (Movie movie : savedWatchList) {
+    //             if (!(redisMoviesIds.contains(movie.getId()))) {
+    //                 redisMovies.add(movie);
+    //             }
+    //         }
+
+    //         for (Long i = listOp.size(keyName); i > 0; i--) {
+    //             listOp.rightPop(keyName);
+    //         }
+            
+    //         for (Movie movie : redisMovies) {
+    //             listOp.rightPush(keyName, movie.toJson().toString());
+    //         }
+    //     } else {
+    //         for (Movie movie : savedWatchList) {
+    //             listOp.rightPush(keyName, movie.toJson().toString());
+    //         }
+    //     }
+    // }
+
+    // Version 2 - saveList2 (IS ADDING W CHECKING FOR REPEATS (W USER))
+    public void saveList2 (List<Movie> savedWatchList, String name) {
+        String keyName = name;
         ListOperations<String, String> listOp = template.opsForList();
 
         long l = listOp.size(keyName);
@@ -81,11 +122,30 @@ public class MovieRepository {
         }
     }
 
-    public List<Movie> get () {
-        String keyName = "savedWatchList";
-        ListOperations<String, String> listOp = template.opsForList();
-        List<Movie> redisMovies = new LinkedList<>();
+    //Version 1 - get (GET ALL SAVED MOVIES FROM DB (W/O USER))
+    // public List<Movie> get () {
+    //     String keyName = "savedWatchList";
+    //     ListOperations<String, String> listOp = template.opsForList();
+    //     List<Movie> redisMovies = new LinkedList<>();
 
+    //     for (int i = 0; i < listOp.size(keyName); i++) {
+    //         redisMovies.add(Movie.create2(listOp.index(keyName, i)));
+    //     }
+
+    //     return redisMovies;
+    // }
+
+    //Version 2 - get (GET ALL SAVED MOVIES FROM DB (W USER))
+    public List<Movie> get (String name) {
+        String keyName = name;
+        ListOperations<String, String> listOp = template.opsForList();
+        
+        if (!template.hasKey(name)) {
+            listOp.rightPush(name, "");
+            listOp.rightPop(name);
+        }
+        
+        List<Movie> redisMovies = new LinkedList<>();
         for (int i = 0; i < listOp.size(keyName); i++) {
             redisMovies.add(Movie.create2(listOp.index(keyName, i)));
         }
@@ -93,8 +153,27 @@ public class MovieRepository {
         return redisMovies;
     }
 
-    public Optional<Movie> getMovieId (String id) {
-        String keyName = "savedWatchList";
+    //Version 1 - getMovieId (GET PATHVARIABLE MOVIE (W/O USER))
+    // public Optional<Movie> getMovieId (String id) {
+    //     String keyName = "savedWatchList";
+    //     ListOperations<String, String> listOp = template.opsForList();
+    //     List<Movie> redisMovies = new LinkedList<>();
+
+    //     for (int i = 0; i < listOp.size(keyName); i++) {
+    //         redisMovies.add(Movie.create2(listOp.index(keyName, i)));
+    //     }
+
+    //     for (int i = 0; i < redisMovies.size(); i++) {
+    //         if (redisMovies.get(i).getId().equals(id)) {
+    //             return Optional.of(redisMovies.get(i));
+    //         }
+    //     }
+    //     return Optional.empty();
+    // }
+
+    //Version 2 - getMovieId (GET PATHVARIABLE MOVIE (W USER))
+    public Optional<Movie> getMovieId (String id, String name) {
+        String keyName = name;
         ListOperations<String, String> listOp = template.opsForList();
         List<Movie> redisMovies = new LinkedList<>();
 

@@ -38,12 +38,12 @@ public class SearchController {
     
     @PostMapping (path="savesearch")
     public String forwardToWatchlist () {
-        return "forward:/savetrend";
+        return "forward:/home/savetrend";
     }
 
     @GetMapping (path="{id}")
     public String getSearchId (@PathVariable String id) {
-        return "forward:/{id}";
+        return "forward:/home/{id}";
     }
 
 }

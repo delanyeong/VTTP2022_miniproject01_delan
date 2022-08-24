@@ -73,18 +73,39 @@ public class MovieService {
         return trendMovieList;
     }
 
-    
-    public void save (List<Movie> savedMovieList) {
-        movieRepo.save(savedMovieList);
-        movieRepo.saveList2(savedMovieList);
+    //=================================================================
+
+    // Version 1
+    // public void save (List<Movie> savedMovieList) {
+    //     // movieRepo.save(savedMovieList);
+    //     movieRepo.saveList2(savedMovieList);
+    //     System.out.println("saved");
+    // }
+
+    // Version 2
+    public void save (List<Movie> savedMovieList, String name) {
+        // movieRepo.save(savedMovieList);
+        movieRepo.saveList2(savedMovieList, name);
         System.out.println("saved");
     }
     
-    public List<Movie> get () {
-        return movieRepo.get();
+    //Version 1 - get
+    // public List<Movie> get () {
+    //     return movieRepo.get();
+    // }
+
+    //Version 2 - get
+    public List<Movie> get (String name) {
+        return movieRepo.get(name);
     }
 
-    public Optional<Movie> getMovieId (String id) {
-        return movieRepo.getMovieId(id);
+    //Version 1 - getMovieId
+    // public Optional<Movie> getMovieId (String id) {
+    //     return movieRepo.getMovieId(id);
+    // }
+
+    //Version 2 - getMovieId
+    public Optional<Movie> getMovieId (String id, String name) {
+        return movieRepo.getMovieId(id, name);
     }
 }
