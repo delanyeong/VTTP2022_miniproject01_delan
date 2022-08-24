@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
+import org.springframework.http.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,11 +15,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import vttp2022.miniproject01.Model.Movie;
 import vttp2022.miniproject01.Service.MovieService;
 
 @Controller
-@RequestMapping 
+@RequestMapping
 public class MovieController {
 
     @Autowired
@@ -95,4 +98,6 @@ public class MovieController {
         model.addAttribute("singlecontent", singleMovie.get(0));
         return "singlecontent";
     }
+
+
 }
