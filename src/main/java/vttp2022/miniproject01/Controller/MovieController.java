@@ -27,12 +27,13 @@ public class MovieController {
     @Autowired
     private MovieService movieSvc;
 
-    @PostMapping
-    public String receiveUser (@RequestBody MultiValueMap<String, String> form, HttpSession sess) {
-        String name = form.getFirst("name");
-        sess.setAttribute("name", name);
-        return "redirect:/home";
-    }
+    //Version 1, Version 2 now in AccountController
+    // @PostMapping
+    // public String receiveUser (@RequestBody MultiValueMap<String, String> form, HttpSession sess) {
+    //     String name = form.getFirst("name");
+    //     sess.setAttribute("name", name);
+    //     return "redirect:/home";
+    // }
 
     //Version 1 - getTrendMovies
     // @GetMapping

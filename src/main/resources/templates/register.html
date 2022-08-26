@@ -6,9 +6,9 @@
 	</head>
 	<body>
 
-		<h2>Please type your name</h2>
+		<h2>Create an account</h2>
 
-		<form method="POST" action="/">
+		<form method="POST" action="/createacc">
 
 			<label for="name">Name:</label>
 			<input id="name" type="text" name="name" size="30" placeholder="Your name" required>
@@ -17,9 +17,6 @@
 			<button type="submit">Go!</button>
 
 		</form>
-
-		<h2 th:text="${loginerror}"></h2>
-		<a th:href="@{/register}">Register</a>
 		
 	</body>
 </html>

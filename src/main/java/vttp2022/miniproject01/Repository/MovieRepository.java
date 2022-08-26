@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Repository;
 import vttp2022.miniproject01.Model.Movie;
 
@@ -187,6 +188,62 @@ public class MovieRepository {
             }
         }
         return Optional.empty();
+    }
+
+
+    public Boolean[] checkUser (String name, String password) {
+        String redisName = "#" + name;
+        ValueOperations<String, String> valueOps = template.opsForValue();
+        Boolean isExist = template.hasKey(redisName);
+        Boolean[] booleanArray = new Boolean[2];
+        booleanArray[0] = null;
+        booleanArray[1] = null;
+
+        //have name but wrong password
+
+        //have name and correct password
+
+        //dont have name 
+
+        if (isExist) {
+            booleanArray[0] = true;
+            String redisPassword = valueOps.get(redisName);
+            String isPassword = ((Boolean)(redisPassword.equals(password))).toString();
+            switch (isPassword) {
+                case "true":
+                    booleanArray[1] = true; //true, true
+                    break;
+
+                case "false":
+                    booleanArray[1] = false; //true, false
+                    break;
+            
+                default:
+                    break;
+            }
+            return booleanArray;
+
+        } else if (!isExist) {
+            booleanArray[0] = false; //false, false
+            booleanArray[1] = false;
+        }
+        
+        return booleanArray;
+    }
+
+    public Boolean createAccount (String name, String password) {
+        String redisName = "#" + name;
+        ValueOperations<String, String> valueOps = template.opsForValue();
+        valueOps.set(redisName, password);
+        Boolean isNameTaken = null;
+        
+        if (template.hasKey(redisName)) {
+            return isNameTaken = true;
+        } else {
+            isNameTaken = false; 
+            valueOps.set(redisName, password);
+        }
+        return isNameTaken;
     }
 
     
