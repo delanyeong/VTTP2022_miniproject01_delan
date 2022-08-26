@@ -191,5 +191,10 @@ public class MovieController {
         return "singlecontent";
     }
 
+    @GetMapping (path="logout")
+    public String logout (HttpSession sess) {
+        sess.invalidate();
+        return "logout";
+    }
 
 }

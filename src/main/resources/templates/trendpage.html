@@ -10,6 +10,8 @@
 
     <h1>Trending Page</h1>
 
+    <a th:href="@{/logout}">Register</a>
+
     <form method="POST" action="/home/savetrend">
 
         <input  type="hidden" name="name" data-th-value="${name}">
