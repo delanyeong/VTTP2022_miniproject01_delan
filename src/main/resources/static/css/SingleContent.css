@@ -1,124 +1,69 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-h1 {
-    font-size: 2.7rem;
-    margin-top: 20px;
-    text-align: center;
-
-}
-
 .cards {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-
+  margin: 0 auto;
+  max-width: 1000px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(225px, 1fr));
+  gap: 20px;
+  font-family: sans-serif;
 }
 
 .card {
-    margin: 40px;
-    position: relative;
-    max-width: 250px;
-    max-height: 350px;
-    cursor: pointer;
-
+  box-shadow: 0 0 3px rgba(0,0,0,0.1);
 
 }
 
-.card-title {
-    display: block;
-    text-align: center;
-    background-color: burlywood;
-    padding: 2%;
+.card:hover {
+  cursor: pointer;
+  transform: scale(1.03);
+  transition: all 1s ease;
+}
+
+.card__image {
+  width: 100%;
+  display: block;
+}
+
+.title {
+  text-align: center;
+}
+
+.card__content {
+  line-height: 1.5;
+  font-size: 0.9em;
+  padding: 15px;
+  background: #fafafa;
+}
+
+.card__content > p:first-of-type {
+  margin-top: 0;
 
 }
 
-.card img{
-    border-radius: 10px;
-    width: 100%;
-    height: 98%;
-    object-fit: cover;
-    display: block;
-    position: relative;
-
+.card__content > p:last-of-type {
+  margin-bottom: 0;
 }
 
-.card-dese{
-    display: block;
-    font-size: 15px;
-    position: absolute;
-    height: 0;
-    top: 0;
-    opacity: 0;
-    padding: 80px 8%;
-    background-color: black;
-    color: white;
-    transition: 0.8s ease;
-
-
+.card__info {
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #555555;
+  background: #eeeeee;
+  font-size: 0.8rem;
+  border-bottom: 2px solid #cccccc;
 }
 
-.card:hover .card-dese{
-    opacity: 1;
-    height: 380px;
+.card__info i {
+  font-size: 0.9rem;
+  margin-right: 8px;
 }
 
-.desc-title {
-    font-size: 2rem;
-    color: wheat;
+.card__link {
+  color: #64968c;
+  text-decoration: none;
 }
 
-
-
-.media {
-    display: flex;
-    flex-direction: column;
-    width: 300px;
-    padding: 10px;
-    margin: 40px;
-    background-color: #282c34;
-    border-radius: 10px;
-    position: relative;
-    font-family: "Montserrat", sans-serif;
-
-    
-  }
-  
-  .media:hover {
-    background-color: white;
-    color: black;
-  }
-  
-  @media (max-width: 550px) {
-    .media {
-      width: 46%;
-    }
-  }
-  
-  .poster {
-    border-radius: 10px;
-    width: 100%;
-    height: 98%;
-    object-fit: cover;
-    display: block;
-    position: relative;
-  }
-  
-  .title {
-    width: 100%;
-    text-align: center;
-    font-size: 17px;
-    padding: 8px 0;
-  }
-  
-  .subTitle {
-    display: flex;
-    justify-content: space-between;
-    padding-bottom: 3px;
-    padding: 0 2px;
-    padding-bottom: 3px;
-  }
+.card__link:hover {
+  text-decoration: underline;
+}

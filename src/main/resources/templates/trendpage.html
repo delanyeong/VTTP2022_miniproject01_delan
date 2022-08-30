@@ -32,31 +32,30 @@
         </div>
         
         <div class="cards">
-            <div class="media" data-th-each="w: ${trendMovieList}">
-                
+                <div class="card" data-th-each="w: ${trendMovieList}">
+                    <a th:href="@{home/{id}(id = ${w.id})}">
+                        <img class="card__image" data-th-src="@{https://image.tmdb.org/t/p/w300{poster_path}(poster_path=${w.poster_path})}" alt="">
+                    </a>
                     
-                        
-                            <a th:href="@{home/{id}(id = ${w.id})}">
-                            <img class="poster" data-th-src="@{https://image.tmdb.org/t/p/w300{poster_path}(poster_path=${w.poster_path})}" alt="">
-                            </a>
-                        
-                        
-                            <a>
-                                <h3 class="title" data-th-text="${w.title}"></h3>
-                            </a>
-                            
-                            <p class="subTitle">Id: <code data-th-text="${w.id}"></code></p>
+                    <div class="card__content">
+                        <h3 class="title" data-th-text="${w.title}"></h3>
+                        <p class="subTitle">Id:<code data-th-text="${w.id}"></code></p>
+                                
+                        <!-- <p class="subTitle" data-th-text="${w.overview}"></p> -->
+                                
+                        <p class="subTitle">Published On:<i data-th-text="${w.release_date}"></i></p>
+                    </div>
 
-                            <p class="subTitle" data-th-text="${w.overview}"></p>
-
-                            <p class="subTitle"> Published On: <i data-th-text="${w.release_date}"></i> </p>
-                            <p class="subTitle">
-                                Save: <input type="checkbox" name="movieId" data-th-value="${w.id}" >
-                            </p>
-                        
+                    <div class="card__info">
+                        <div>
+                            <p class="subTitle">Save:<input type="checkbox" name="movieId" data-th-value="${w.id}"></p>
+                        </div>
+                        <div>
+                            <a th:href="@{home/{id}(id = ${w.id})}" class="card__link">View Movie</a>
+                        </div>
+                    </div>
                     
-                            
-            </div>    
+                </div>
         </div>
         
 
