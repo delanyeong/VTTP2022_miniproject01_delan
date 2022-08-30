@@ -4,9 +4,19 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link th:href = "@{/css/bootstrap.min.css}" rel="stylesheet"> -->
+    <link th:href = "@{/css/SingleContent.css}" rel="stylesheet">
     <title>Document</title>
 </head>
 <body>
+
+  <div class="cards">
+    <div class="card">
+        <h2 class="card-title"></h2>
+        <img src>
+        <p class="card-dese"><span class="desc-title"></span></p>
+    </div>
+  </div>
 
     <h1>Trending Page</h1>
 
@@ -21,31 +31,34 @@
             <button type="submit" formmethod="GET" formaction="">Refresh</button>
         </div>
         
-        <div data-th-each="w: ${trendMovieList}">
-            <table>
-                <tr>
-                    <td>
-                        <a th:href="@{home/{id}(id = ${w.id})}">
-                        <img data-th-src="@{https://image.tmdb.org/t/p/w300{poster_path}(poster_path=${w.poster_path})}" alt="">
-                        </a>
-                    </td>
-                    <td>
-                        <a>
-                            <h3 data-th-text="${w.title}"></h3>
-                        </a>
+        <div class="cards">
+            <div class="media" data-th-each="w: ${trendMovieList}">
+                
+                    
+                        
+                            <a th:href="@{home/{id}(id = ${w.id})}">
+                            <img class="poster" data-th-src="@{https://image.tmdb.org/t/p/w300{poster_path}(poster_path=${w.poster_path})}" alt="">
+                            </a>
+                        
+                        
+                            <a>
+                                <h3 class="title" data-th-text="${w.title}"></h3>
+                            </a>
+                            
+                            <p class="subTitle">Id: <code data-th-text="${w.id}"></code></p>
 
-                        <p>Id: <code data-th-text="${w.id}"></code></p>
+                            <p class="subTitle" data-th-text="${w.overview}"></p>
 
-                        <p data-th-text="${w.overview}"></p>
-
-                        <p> Published On: <i data-th-text="${w.release_date}"></i> </p>
-                        <p>
-                            Save: <input type="checkbox" name="movieId" data-th-value="${w.id}" >
-                        </p>
-                    </td>
-                </tr>
-            </table>            
+                            <p class="subTitle"> Published On: <i data-th-text="${w.release_date}"></i> </p>
+                            <p class="subTitle">
+                                Save: <input type="checkbox" name="movieId" data-th-value="${w.id}" >
+                            </p>
+                        
+                    
+                            
+            </div>    
         </div>
+        
 
     </form>
 </body>
