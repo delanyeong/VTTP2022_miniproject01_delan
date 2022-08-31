@@ -4,25 +4,64 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link th:href = "@{/css/bootstrap.min.css}" rel="stylesheet"> -->
+    <link th:href = "@{/css/bootstrap.min.css}" rel="stylesheet">
     <link th:href = "@{/css/SingleContent.css}" rel="stylesheet">
     <title>Document</title>
 </head>
 <body>
 
-  <div class="cards">
-    <div class="card">
-        <h2 class="card-title"></h2>
-        <img src>
-        <p class="card-dese"><span class="desc-title"></span></p>
-    </div>
-  </div>
-
-    <h1>Trending Page</h1>
-
+    <!-- <h1>Trending Page</h1> -->
+    
     <a th:href="@{/logout}">Logout</a>
-
+    
     <form method="POST" action="/home/savetrend">
+        <input type="hidden" name="name" data-th-value="${name}">
+    
+        <div>
+            <button type="submit">Save</button>
+            <button type="submit" formmethod="GET" formaction="">Refresh</button>
+        </div>
+
+        <section class="bg-light pt-5 pb-5 shadow-sm">
+            <div class="container">
+                <div class="row pt-5">
+                    <div class="col-12">
+                        <h3 class="text-uppercase border-bottom mb-4">Trending Page</h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <!--ADD CLASSES HERE d-flex align-items-stretch-->
+                    <div class="col-lg-4 mb-3 d-flex align-items-stretch" data-th-each="w: ${trendMovieList}">
+                        <div class="card">
+                            <a th:href="@{home/{id}(id = ${w.id})}">
+                                <img class="card-img-top"
+                                    data-th-src="@{https://image.tmdb.org/t/p/w500{poster_path}(poster_path=${w.poster_path})}"
+                                    alt="Card Image">
+                            </a>
+                            <p class="card-dese" data-th-text="${w.overview}"></p>
+                            <div class="card-body d-flex flex-column">
+                                <h5 data-th-text="${w.title}" class="card-title">Dōtonbori Canal</h5>
+                                <p class="card-text mb-4">Id: <code data-th-text="${w.id}"></code></p>
+                                <p class="card-text mb-4">Released On: <i data-th-text="${w.release_date}"></i></p>
+                                <div class="card__info">
+                                    <div>
+                                        <span>Save: <input type="checkbox" name="movieId"
+                                                data-th-value="${w.id}"></span>
+                                    </div>
+                                    <div>
+                                        <a th:href="@{home/{id}(id = ${w.id})}" class="card__link">View Movie</a>
+                                    </div>
+                                </div>
+    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </form>
+    
+    <!-- <form method="POST" action="/home/savetrend">
 
         <input  type="hidden" name="name" data-th-value="${name}">
 
@@ -41,7 +80,7 @@
                         <h3 class="title" data-th-text="${w.title}"></h3>
                         <p class="subTitle">Id:<code data-th-text="${w.id}"></code></p>
                                 
-                        <!-- <p class="subTitle" data-th-text="${w.overview}"></p> -->
+                        <p class="subTitle" data-th-text="${w.overview}"></p>
                                 
                         <p class="subTitle">Published On:<i data-th-text="${w.release_date}"></i></p>
                     </div>
@@ -57,8 +96,6 @@
                     
                 </div>
         </div>
-        
-
-    </form>
+    </form> -->
 </body>
 </html>
