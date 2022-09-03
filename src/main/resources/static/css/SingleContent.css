@@ -85,10 +85,88 @@
 
 .card:hover .card-dese{
   opacity: 0.7;
-  height: 73%;
+  height: 60%;
 }
 
 .desc-title{
   font-size: 2rem;
   color: wheat;
+}
+
+
+.brand-gradient{
+  background: #00ccff; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #00ccff, #00a347); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #00ccff, #00a347); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.vr{
+  color: white;
+}
+
+
+.form-submit-button {
+  /* display: none; */
+  /* content: "submit"; */
+  }
+
+/* button:hover:before {
+content: "Button after hover>>"
+}
+  
+button:after {
+content: "Button before hover"
+}
+  
+button:hover:after {
+content: "hello"
+} */
+
+button:active{
+  background:#FFA500;
+}
+
+button:focus{
+  background:#FFA500;
+}
+
+.stars{
+  color: #FFA500;
+}
+
+
+
+/* CSS */
+.button-1 {
+  background-color: #EA4C89;
+  border-radius: 8px;
+  border-style: none;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  cursor: pointer;
+  display: inline-block;
+  font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  height: 40px;
+  line-height: 20px;
+  list-style: none;
+  margin: 0;
+  outline: none;
+  padding: 10px 16px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  transition: color 100ms;
+  vertical-align: baseline;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-1:hover,
+.button-1:focus {
+  background-color: #F082AC;
 }

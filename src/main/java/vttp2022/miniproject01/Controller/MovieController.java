@@ -1,5 +1,6 @@
 package vttp2022.miniproject01.Controller;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,9 +35,47 @@ public class MovieController {
         
         if (null != (String) sess.getAttribute("name")) {
             List<Movie> trendMovieList = movieSvc.getTrendMovies();
+            List<Movie> watchlistmovies = movieSvc.get((String)sess.getAttribute("name"));
+
+
+
+            List<Movie> moviesFavourited = trendMovieList.stream()                          //create new list of movies from list of movies based on list of Ids
+            .filter(movieObj -> {
+                for (Movie i: watchlistmovies) {
+                    if ((i.getId()).equals(movieObj.getId())) {
+                        return true;
+                    }
+                }
+                return false;
+            })
+            .toList();
+
+            System.out.println(moviesFavourited.toString());
+
+            List<String> trendMovieListId = new LinkedList<>();
+            for (Movie movie : trendMovieList) {
+                trendMovieListId.add(movie.getId());
+            }
+
+            System.out.println(trendMovieListId.toString());
+
+            List<String> moviesFavouritedId = new LinkedList<>();
+            for (Movie movie : moviesFavourited) {
+                moviesFavouritedId.add(movie.getId());
+            }
+
+            System.out.println(moviesFavouritedId.toString());
+
             sess.setAttribute("movies", trendMovieList);
             model.addAttribute("trendMovieList", trendMovieList);
+            
+
+            model.addAttribute("trendMovieListId", trendMovieListId);
+            model.addAttribute("moviesFavouritedId", moviesFavouritedId);
         }
+
+
+
         return "trendpage";
     }
 
@@ -66,7 +105,8 @@ public class MovieController {
         if (moviesToSave.size() > 0) {      //save new list of movies to Repo if it's not empty
             movieSvc.save(moviesToSave, (String)sess.getAttribute("name"));
         }
-        return "redirect:/home/mywatchlist";
+        // return "redirect:/home/mywatchlist";
+        return "redirect:/home";
     }
 
     @GetMapping (path="home/mywatchlist/{id}")
