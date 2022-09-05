@@ -1,7 +1,12 @@
 package vttp2022.miniproject01.Model;
 
 import java.io.StringReader;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+
 import jakarta.json.Json;
+import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
 
@@ -14,7 +19,11 @@ public class Movie {
     private String release_date;
     private Integer vote_average;
     private Integer vote_count;
+    private List<Integer> genre_ids; //genre_ids
     
+    public List<Integer> getGenre_ids() {return genre_ids;} //genre_ids
+    public void setGenre_ids(List<Integer> genre_ids) {this.genre_ids = genre_ids;} //genre_ids
+
     public String getId() {return id;}
     public void setId(String id) {this.id = id;}
 
@@ -37,13 +46,14 @@ public class Movie {
     public void setVote_count(Integer vote_count) {this.vote_count = vote_count;}
 
     
-
+    //create function for frontend
     public static Movie create(String jsonStr) {
         StringReader strReader = new StringReader(jsonStr);
         JsonReader reader = Json.createReader(strReader);
         return create(reader.readObject());
     }
     
+    //create function for frontend
     public static Movie create(JsonObject trendDataElem) {
         Movie mo = new Movie();
         mo.setId(Integer.toString(trendDataElem.getInt("id")));
@@ -53,16 +63,50 @@ public class Movie {
         mo.setRelease_date(trendDataElem.getString("release_date", "Release Date"));
         mo.setVote_average(trendDataElem.getInt("vote_average"));
         mo.setVote_count(trendDataElem.getInt("vote_count"));
+        mo.setGenre_ids(getIntList(trendDataElem.getJsonArray("genre_ids"))); //genre_ids
+        // System.out.println("this is" + trendDataElem.getJsonArray("genre_ids"));
         return mo;
     }
 
+    //genre_ids
+    public static List<Integer> getIntList(JsonArray intJsonArray) {
+        List<Integer> genreIntList = new LinkedList<>();
+        if (intJsonArray != null) {
+            for (int i = 0; i < intJsonArray.size(); i++) {
+                // System.out.println("here it is " + intJsonArray.getInt(i));    
+                genreIntList.add(intJsonArray.getInt(i));
+            }
+        } else {
+            return Collections.emptyList();
+        }
+        // System.out.println(genreIntList);
+        return genreIntList;
+    }
 
+    public static List<Integer> getIntList2(String intJsonArray) {
+        List<Integer> genreIntList = new LinkedList<>();
+        String[] stringArray = intJsonArray.replaceAll("\\[", "")
+                                .replaceAll("]", "")
+                                .replaceAll("\\s", "")
+                                .split(",");
+        int[] arr = new int[stringArray.length];
+        for (int i = 0; i < stringArray.length; i++) {
+            arr[i] = Integer.valueOf(stringArray[i]);
+        }
+        for (int i = 0; i < arr.length; i++) {
+            genreIntList.add(arr[i]);
+        }
+        return genreIntList;
+    }
+
+    //create function for backend
     public static Movie create2(String jsonStr) {
         StringReader strReader = new StringReader(jsonStr);
         JsonReader reader = Json.createReader(strReader);
         return create2(reader.readObject());
     }
     
+    //create function for backend
     public static Movie create2(JsonObject trendDataElem) {
         Movie mo = new Movie();
         mo.setId(trendDataElem.getString("id"));
@@ -72,7 +116,8 @@ public class Movie {
         mo.setRelease_date(trendDataElem.getString("release_date", "Release Date"));
         mo.setVote_average(trendDataElem.getInt("vote_average"));
         mo.setVote_count(trendDataElem.getInt("vote_count"));
-
+        System.out.println("this is it " + (trendDataElem.getString("genre_ids")));
+        mo.setGenre_ids(getIntList2(trendDataElem.getString("genre_ids"))); //genre_ids
         return mo;
     }
 
@@ -85,6 +130,7 @@ public class Movie {
 			.add("release_date", this.release_date)
             .add("vote_average", this.vote_average)
             .add("vote_count", this.vote_count)
+            .add("genre_ids", (this.genre_ids).toString()) //genre_ids
 			.build();
     }
 
