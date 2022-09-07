@@ -55,7 +55,7 @@ public class MovieService {
         
         //Get the String payload from the payload
         String payload = resp.getBody();
-        System.out.println("payload:" + payload);
+        // System.out.println("payload:" + payload);
         
         Reader strReader = new StringReader(payload);
         JsonReader jsonReader = Json.createReader(strReader);
@@ -78,7 +78,7 @@ public class MovieService {
     public void save (List<Movie> savedMovieList, String name) {
         // movieRepo.save(savedMovieList);
         movieRepo.saveList2(savedMovieList, name);
-        System.out.println("saved");
+        System.out.println("Movie Saved");
     }
 
     public List<Movie> get (String name) {

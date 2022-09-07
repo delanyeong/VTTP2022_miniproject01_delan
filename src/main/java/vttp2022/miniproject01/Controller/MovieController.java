@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import vttp2022.miniproject01.Model.Movie;
+import vttp2022.miniproject01.Service.AccountService;
 import vttp2022.miniproject01.Service.MovieService;
 
 @Controller
@@ -27,6 +28,10 @@ public class MovieController {
 
     @Autowired
     private MovieService movieSvc;
+
+    //genre
+    @Autowired
+    private AccountService accSvc;
 
     @GetMapping (path="home")
     public String getTrendMovies (Model model, HttpSession sess) {
@@ -50,21 +55,21 @@ public class MovieController {
             })
             .toList();
 
-            System.out.println(moviesFavourited.toString());
+            System.out.println("moviesFavourited: " + moviesFavourited.toString());
 
             List<String> trendMovieListId = new LinkedList<>();
             for (Movie movie : trendMovieList) {
                 trendMovieListId.add(movie.getId());
             }
 
-            System.out.println(trendMovieListId.toString());
+            System.out.println("trendMovieListId: " + trendMovieListId.toString());
 
             List<String> moviesFavouritedId = new LinkedList<>();
             for (Movie movie : moviesFavourited) {
                 moviesFavouritedId.add(movie.getId());
             }
 
-            System.out.println(moviesFavouritedId.toString());
+            System.out.println("moviesFavourited2: " + moviesFavouritedId.toString());
 
             sess.setAttribute("movies", trendMovieList);
             model.addAttribute("trendMovieList", trendMovieList);
@@ -91,7 +96,7 @@ public class MovieController {
     (@RequestBody MultiValueMap<String, String> form, Model model, HttpSession sess) {
         List<Movie> savedMovieList = (List<Movie>)sess.getAttribute("movies"); //takes list of movies saved from Session
         List<String> saveIds = form.get("movieId");                             //gets list of Ids from form 
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>>" + saveIds);
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>> saveIds: " + saveIds);
         List<Movie> moviesToSave = savedMovieList.stream()                          //create new list of movies from list of movies based on list of Ids
             .filter(movieObj -> {
                 for (String i: saveIds) {
@@ -102,9 +107,13 @@ public class MovieController {
                 return false;
             })
             .toList();
-        if (moviesToSave.size() > 0) {      //save new list of movies to Repo if it's not empty
+        if (moviesToSave.size() > 0) {                                              //save new list of movies to Repo if it's not empty
             movieSvc.save(moviesToSave, (String)sess.getAttribute("name"));
         }
+
+        //GENRE
+        accSvc.addToGenreList(moviesToSave, (String)sess.getAttribute("name"));
+
         // return "redirect:/home/mywatchlist";
         return "redirect:/home";
     }
@@ -129,7 +138,7 @@ public class MovieController {
     public String getMovieId
     (@PathVariable String id, Model model, HttpSession sess) {
         List<Movie> savedMovieList = (List<Movie>)sess.getAttribute("movies"); //takes list of movies saved from Session
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>>" + id);
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>> id: " + id);
         List<Movie> singleMovie = savedMovieList.stream()                          //create new list of movies from list of movies based on list of Ids
             .filter(movieObj -> {
                     if (id.equals(movieObj.getId())) {

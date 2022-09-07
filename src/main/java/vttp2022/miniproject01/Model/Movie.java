@@ -116,7 +116,7 @@ public class Movie {
         mo.setRelease_date(trendDataElem.getString("release_date", "Release Date"));
         mo.setVote_average(trendDataElem.getInt("vote_average"));
         mo.setVote_count(trendDataElem.getInt("vote_count"));
-        System.out.println("this is it " + (trendDataElem.getString("genre_ids")));
+        System.out.println("this is API Movie trendDataElem: " + (trendDataElem.getString("genre_ids")));
         mo.setGenre_ids(getIntList2(trendDataElem.getString("genre_ids"))); //genre_ids
         return mo;
     }
