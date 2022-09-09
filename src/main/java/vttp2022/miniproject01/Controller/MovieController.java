@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
-import org.springframework.http.MediaType;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
 import vttp2022.miniproject01.Model.Movie;
 import vttp2022.miniproject01.Service.AccountService;
 import vttp2022.miniproject01.Service.MovieService;
@@ -118,21 +122,22 @@ public class MovieController {
         return "redirect:/home";
     }
 
-    @GetMapping (path="home/mywatchlist/{id}")
-    public String getWatchlistId
-    (@PathVariable String id, Model model, HttpSession sess) {
-        Optional<Movie> opt = movieSvc.getMovieId(id, (String)sess.getAttribute("name"));
+    //version 1
+    // @GetMapping (path="home/mywatchlist/{id}")
+    // public String getWatchlistId
+    // (@PathVariable String id, Model model, HttpSession sess) {
+    //     Optional<Movie> opt = movieSvc.getMovieId(id, (String)sess.getAttribute("name"));
 
-        if (opt.isEmpty()) {
-            String errorMsg = "Cannot find article %s".formatted(id);
-            model.addAttribute("errormsg", errorMsg);
-        } else {
-            Movie movieById = opt.get();
-            model.addAttribute("singlecontent", movieById);
-        }
+    //     if (opt.isEmpty()) {
+    //         String errorMsg = "Cannot find article %s".formatted(id);
+    //         model.addAttribute("errormsg", errorMsg);
+    //     } else {
+    //         Movie movieById = opt.get();
+    //         model.addAttribute("singlecontent", movieById);
+    //     }
 
-        return "singlecontent";
-    }
+    //     return "singlecontent";
+    // }
 
     @GetMapping (path="home/{id}")
     public String getMovieId

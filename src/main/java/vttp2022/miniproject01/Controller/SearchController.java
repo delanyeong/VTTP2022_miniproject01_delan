@@ -33,6 +33,8 @@ public class SearchController {
         List<Movie> searchMovieList = searchSvc.searchMovies(query);
         sess.setAttribute("movies", searchMovieList);
         model.addAttribute("searchMovieList", searchMovieList);
+        model.addAttribute("query", query);
+
         return "searchresult";
     }
     

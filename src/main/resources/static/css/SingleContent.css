@@ -170,3 +170,12 @@ button:focus{
 .button-1:focus {
   background-color: #F082AC;
 }
+
+.recommend {
+  flex: 0 0 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

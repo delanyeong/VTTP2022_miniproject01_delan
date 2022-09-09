@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
     <link th:href = "@{/css/bootstrap.min.css}" rel="stylesheet">
     <link th:href = "@{/css/SingleContent.css}" rel="stylesheet">
-    <title>Document</title>
+    <title>MovieApp</title>
 </head>
 <body>
 
@@ -33,19 +33,19 @@
                     </li>
                     <div class="vr"></div>
                     <li class="nav-item">
-                        <a class="nav-link" href="/home/mywatchlist">My Watctlist</a>
+                        <a class="nav-link" href="/home/mywatchlist">My Watchlist</a>
                     </li>
                     <div class="vr"></div>
                     <li class="nav-item">
                         <a class="nav-link" href="/recommended">Recommended for You</a>
                     </li>
                 </ul>
-                <form class="d-flex" role="search">
+                <form class="d-flex" role="search" method="GET" action="/search/movie">
                     <div class="hstack gap-3">
                         <div class="input-group">
                             <input class="form-control form-control-sm me-auto" type="text" placeholder="Search for..."
-                                aria-label="Search for...">
-                            <button type="button" class="btn btn-sm btn-success">
+                                aria-label="Search for..." name="query">
+                            <button type="submit" class="btn btn-sm btn-success">
                                 <!-- Search Icon -->
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                     class="bi bi-search" viewBox="0 0 16 16">
