@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
@@ -118,8 +119,23 @@ public class MovieController {
         //GENRE
         accSvc.addToGenreList(moviesToSave, (String)sess.getAttribute("name"));
 
-        // return "redirect:/home/mywatchlist";
-        return "redirect:/home";
+        System.out.println("THIS IS THE QUERY " + sess.getAttribute("query"));
+        System.out.println("THIS IS THE PAGE " + sess.getAttribute("page"));
+
+        if (sess.getAttribute("page").equals("search")) {
+            String URL = "/search/movie";
+            String url = UriComponentsBuilder.fromUriString(URL)
+        .queryParam("query", sess.getAttribute("query"))
+        .toUriString();
+        sess.setAttribute("page", "trend");
+        System.out.println("THIS IS THE PAGE " + sess.getAttribute("page"));
+        return "redirect:" + url;
+        } else {
+
+            // return "redirect:/home/mywatchlist";
+            return "redirect:/home";
+        }
+
     }
 
     //version 1

@@ -76,9 +76,10 @@
 
     <!-- <a th:href="@{/logout}">Logout</a> -->
     
-    <form method="POST" action="/home/savetrend">
+    <form method="POST" action="/search/savesearch">
         <input type="hidden" name="name" data-th-value="${name}">
-    
+        <input type="hidden" name="query" data-th-value="${query}">
+
         <!-- <div>
             <button type="submit">Save</button>
             <button type="submit" formmethod="GET" formaction="">Refresh</button>
