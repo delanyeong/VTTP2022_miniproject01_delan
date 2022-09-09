@@ -88,4 +88,8 @@ public class RecService {
         return recKeys.get(0);
     }
 
+    public List<Movie> get (String name) {
+        return movieRepo.get(name);
+    }
+
 }

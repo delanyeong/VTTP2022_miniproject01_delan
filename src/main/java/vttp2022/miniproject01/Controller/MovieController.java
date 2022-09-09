@@ -125,11 +125,14 @@ public class MovieController {
         if (sess.getAttribute("page").equals("search")) {
             String URL = "/search/movie";
             String url = UriComponentsBuilder.fromUriString(URL)
-        .queryParam("query", sess.getAttribute("query"))
-        .toUriString();
-        sess.setAttribute("page", "trend");
-        System.out.println("THIS IS THE PAGE " + sess.getAttribute("page"));
-        return "redirect:" + url;
+                .queryParam("query", sess.getAttribute("query"))
+                .toUriString();
+            sess.setAttribute("page", "trend");
+            System.out.println("THIS IS THE PAGE " + sess.getAttribute("page"));
+            return "redirect:" + url;
+        } else if (sess.getAttribute("page").equals("recommend")) {
+            sess.setAttribute("page", "trend");
+            return "redirect:/recommended";
         } else {
 
             // return "redirect:/home/mywatchlist";
