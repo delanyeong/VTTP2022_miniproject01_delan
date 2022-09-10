@@ -141,7 +141,7 @@ public class MovieController {
 
     }
 
-    //version 1
+    //version 1 - Changed for returning jsonstring by Rest Controller in MovieRestController
     // @GetMapping (path="home/mywatchlist/{id}")
     // public String getWatchlistId
     // (@PathVariable String id, Model model, HttpSession sess) {
@@ -178,8 +178,30 @@ public class MovieController {
         return "singlecontent";
     }
 
+    //delete
+    @GetMapping (path="home/mywatchlist/delete/{id}")
+    public String getWatchlistId
+    (@PathVariable String id, Model model, HttpSession sess) {
+
+        movieSvc.delete(id, (String)sess.getAttribute("name"));
+
+        // Optional<Movie> opt = movieSvc.getMovieId(id, (String)sess.getAttribute("name"));
+
+        // if (opt.isEmpty()) {
+        //     String errorMsg = "Cannot find article %s".formatted(id);
+        //     model.addAttribute("errormsg", errorMsg);
+        // } else {
+        //     Movie movieById = opt.get();
+        //     model.addAttribute("singlecontent", movieById);
+        // }
+
+        return "redirect:/home/mywatchlist";
+    }
+
+
     @GetMapping (path="logout")
-    public String logout (HttpSession sess) {
+    public String logout (HttpSession sess, Model model) {
+        model.addAttribute("name", (String)sess.getAttribute("name"));
         sess.invalidate();
         return "logout";
     }

@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
     <link th:href = "@{/css/bootstrap.min.css}" rel="stylesheet">
     <link th:href = "@{/css/SingleContent.css}" rel="stylesheet">
 
@@ -72,14 +74,162 @@
 <!-- Navbar -->
 
     <!-- <h1>My Watch List</h1> -->
-
-    <div class="col-12">
-        <h3 class="text-uppercase border-bottom mb-4">My Watchlist</h3>
-    </div>
+    <section class="bg-light pb-5 shadow-sm">
+        <div class="container">
+            <div class="row pt-5">
+                <div class="col-12">
+                    <h3 class="text-uppercase border-bottom">My Watchlist</h3>
+                </div>
+            
 
     <!-- <a th:href="@{/logout}">Logout</a> -->
+
+        <section>
+            <div class="container py-5">
+            <div class="row justify-content-center mb-3" data-th-each="w: ${moviesToSave}">
+                <div class="col-md-12 col-xl-10">
+                <div class="card shadow-0 border rounded-3">
+                    <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-lg-0">
+                        <div class="bg-image hover-zoom ripple rounded ripple-surface">
+                            <a th:href="@{/home/mywatchlist/{id}(id = ${w.id})}">
+                            <img data-th-src="@{https://image.tmdb.org/t/p/w300{poster_path}(poster_path=${w.poster_path})}" alt=""
+                            class="w-100" />
+                            </a>
+                            <a href="#!">
+                            <div class="hover-overlay">
+                                <div class="mask" style="background-color: rgba(253, 253, 253, 0.15);"></div>
+                            </div>
+                            </a>
+                        </div>
+                        </div>
+                        <div class="col-md-6 col-lg-6 col-xl-6">
+                        <h5 data-th-text="${w.title}"></h5>
+                        <div class="d-flex flex-row">
+                            <div data-th-if="${w.vote_average &lt; 1}" class="stars">
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                            </div>
+                            <div data-th-if="${w.vote_average ge 1 and w.vote_average lt 2}" class="stars">
+                                <i class="bi bi-star-half"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                            </div>
+                            <div data-th-if="${w.vote_average ge 2 and w.vote_average lt 3}" class="stars">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                            </div>
+                            <div data-th-if="${w.vote_average ge 3 and w.vote_average lt 4}" class="stars">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-half"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                            </div>
+                            <div data-th-if="${w.vote_average ge 4 and w.vote_average lt 5}" class="stars">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                            </div>
+                            <div data-th-if="${w.vote_average ge 5 and w.vote_average lt 6}" class="stars">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-half"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                            </div>
+                            <div data-th-if="${w.vote_average ge 6 and w.vote_average lt 7}" class="stars">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                            </div>
+                            <div data-th-if="${w.vote_average ge 7 and w.vote_average lt 8}" class="stars">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-half"></i>
+                                <i class="bi bi-star"></i>
+                            </div>
+                            <div data-th-if="${w.vote_average ge 8 and w.vote_average lt 9}" class="stars">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star"></i>
+                            </div>
+                            <div data-th-if="${w.vote_average ge 9 and w.vote_average lt 10}" class="stars">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-half"></i>
+                            </div>
+                            <div data-th-if="${w.vote_average ge 10}" class="stars">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                            </div>
+                            <p>&nbsp;&nbsp;<span data-th-text="${w.vote_count}"></span> review(s)</p>
+                        </div>
+                        <div class="mt-1 mb-0 text-muted small">
+                            <span>Release Date</span>
+                            <span class="text-primary"> • </span>
+                            <span data-th-text="${w.release_date}"></span>
+                            <span class="text-primary"> • </span>
+                            <span>Movie<br /></span>
+                        </div>
+                        <div class="mb-2 text-muted small">
+                            <span>Movie</span>
+                            <span class="text-primary"> • </span>
+                            <span>Movie</span>
+                            <span class="text-primary"> • </span>
+                            <span>Movie<br /></span>
+                        </div>
+                        <p data-th-text="${w.overview}" class="text-truncate mb-4 mb-md-0">
+                            
+                        </p>
+                        </div>
+                        <div class="col-md-6 col-lg-3 col-xl-3 border-sm-start-none border-start">
+                        <!-- <div class="d-flex flex-row align-items-center mb-1">
+                            <h4 class="mb-1 me-1">$13.99</h4>
+                            <span class="text-danger"><s>$20.99</s></span>
+                        </div> -->
+                        <!-- <h6 class="text-success">Free shipping</h6> -->
+                        <div class="d-flex flex-column mt-4">
+                            <a class="btn btn-primary btn-sm" th:href="@{/home/mywatchlist/{id}(id = ${w.id})}">Details</a>
+                            <a class="btn btn-outline-primary btn-sm mt-2" th:href="@{/home/mywatchlist/delete/{id}(id = ${w.id})}">
+                            Remove from Watchlist
+                            </a>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+        </section>
+    </div>
+</div>
+</section>
+
         
-        <div data-th-each="w: ${moviesToSave}">
+        <!-- <div data-th-each="w: ${moviesToSave}">
             <table>
                 <tr>
                     <td>
@@ -100,6 +250,6 @@
                     </td>
                 </tr>
             </table>    
-        </div>
+        </div> -->
 </body>
 </html>

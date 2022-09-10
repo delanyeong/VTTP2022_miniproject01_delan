@@ -42,6 +42,7 @@ public class AccountController {
 
         if (isName == true && isPass == true) {
             sess.setAttribute("name", name);
+            sess.setAttribute("page", "trend");
             return "redirect:/home";
 
         } else if (isName == true && isPass == false) {
@@ -62,6 +63,7 @@ public class AccountController {
 
         accountSvc.createAccount(name, password);
         sess.setAttribute("name", name);
+        sess.setAttribute("page", "trend");
 
         return "redirect:/home";
     }

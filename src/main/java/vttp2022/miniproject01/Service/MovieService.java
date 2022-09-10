@@ -88,4 +88,9 @@ public class MovieService {
     public Optional<Movie> getMovieId (String id, String name) {
         return movieRepo.getMovieId(id, name);
     }
+
+    //delete
+    public void delete (String id, String name) {
+        movieRepo.delete(id, name);
+    }
 }

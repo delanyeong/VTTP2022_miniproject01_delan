@@ -197,6 +197,33 @@ public class MovieRepository {
         return Optional.empty();
     }
 
+    //delete function
+    public void delete (String id, String name) {
+        String keyName = name;
+        ListOperations<String, String> listOp = template.opsForList();
+        List<Movie> redisMovies = new LinkedList<>();
+
+        for (int i = 0; i < listOp.size(keyName); i++) {
+            redisMovies.add(Movie.create2(listOp.index(keyName, i)));
+        }
+
+        for (Movie movie : redisMovies) {
+            if ((movie.getId()).equals(id)) {
+                redisMovies.remove(movie);
+                break;
+            }
+        }
+
+        for (Long i = listOp.size(keyName); i > 0; i--) {
+            listOp.rightPop(keyName);
+        }
+        
+        for (Movie movie : redisMovies) {
+            listOp.rightPush(keyName, movie.toJson().toString());
+        }
+
+    }
+
     // =============================================================================
     // GenreList
     
