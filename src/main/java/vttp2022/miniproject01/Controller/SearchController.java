@@ -62,7 +62,8 @@ public class SearchController {
 
         model.addAttribute("moviesFavouritedId", moviesFavouritedId);
 //==========================================================================================
-
+        
+        model.addAttribute("name", (String)sess.getAttribute("name"));
         return "searchresult";
     }
     

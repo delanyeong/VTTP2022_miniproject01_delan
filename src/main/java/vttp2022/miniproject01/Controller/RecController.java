@@ -67,6 +67,7 @@ public class RecController {
         
         
         model.addAttribute("trendMovieList", recMovieList);
+        model.addAttribute("name", (String)sess.getAttribute("name"));
         return "recommend";
     }
 
@@ -75,6 +76,13 @@ public class RecController {
     public String forwardToWatchlist (HttpSession sess) {
         sess.setAttribute("page", "recommend"); // for original savemovie endpoint to know where the save is coming from (trend/search)
         return "forward:/home/savetrend";
+    }
+
+    //reset the scoreboard
+    @GetMapping (path="/recommended/reset")
+    public String resetScore (HttpSession sess) {
+        recSvc.resetScore((String)sess.getAttribute("name"));
+        return "redirect:/recommended";
     }
 
     }

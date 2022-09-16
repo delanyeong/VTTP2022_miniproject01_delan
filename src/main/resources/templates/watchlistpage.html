@@ -42,6 +42,11 @@
                     <a class="nav-link" href="/recommended">Recommended for You</a>
                 </li>
             </ul>
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page">Welcome, <span data-th-text="${name}"></span></a>
+                </li>
+            </ul>
             <form class="d-flex" role="search" method="GET" action="/search/movie">
                 <div class="hstack gap-3">
                     <div class="input-group">

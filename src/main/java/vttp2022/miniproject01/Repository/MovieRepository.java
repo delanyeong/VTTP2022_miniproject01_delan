@@ -309,6 +309,29 @@ public class MovieRepository {
         return recKeys;
 
     }
+
+    //reset score
+    public void resetScore (String name) {
+        String keyName = ">" + name;
+        HashOperations<String, String, Integer> hashOp = template.opsForHash();
+
+        //call hashmap from redis
+        Set<String> keys = hashOp.keys(keyName);
+        Object[] keysArray = keys.toArray();
+        // List<Integer> values = hashOp.values(keyName);
+         
+        //create hashmap 
+        Map<String, Integer> redisGenreMap  = new HashMap<String, Integer>();
+
+        for (int i = 0; i < keys.size(); i++) {
+            redisGenreMap.put(keysArray[i].toString(), 0);
+        }
+
+        hashOp.putAll(keyName, redisGenreMap);
+
+        System.out.println(hashOp.keys(keyName));
+        System.out.println(hashOp.values(keyName));
+    }
     
 
 

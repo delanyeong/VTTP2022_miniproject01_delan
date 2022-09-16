@@ -92,4 +92,8 @@ public class RecService {
         return movieRepo.get(name);
     }
 
+    public void resetScore (String name) {
+        movieRepo.resetScore(name);
+    }
+
 }

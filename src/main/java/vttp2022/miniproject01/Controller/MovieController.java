@@ -93,6 +93,7 @@ public class MovieController {
     public String watchlistpage (HttpSession sess, Model model) {
         List<Movie> watchlistmovies = movieSvc.get((String)sess.getAttribute("name"));
         model.addAttribute("moviesToSave", watchlistmovies);
+        model.addAttribute("name", (String)sess.getAttribute("name"));
         return "watchlistpage";
     }
 
