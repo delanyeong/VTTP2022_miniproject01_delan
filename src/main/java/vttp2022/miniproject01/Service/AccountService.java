@@ -27,7 +27,11 @@ public class AccountService {
     @Autowired
     private MovieRepository movieRepo;
 
-//==========================================================================================
+//================================================== 2. Genre API Call ==================================================
+
+    /*
+     * API Call from TMDB API for Movie Genre (Genre ID + Genre Desc)
+     */
 
     @Value("${API_KEY}")
     private String key;
@@ -35,6 +39,7 @@ public class AccountService {
     private static final String URL = "https://api.themoviedb.org/3/genre/movie/list";
 
     public List<Genre> setUpGenreScore (String name) {
+
         //Create the url with query string with ucbuilder
         String url = UriComponentsBuilder.fromUriString(URL)
         .queryParam("language", "en-US")
@@ -75,8 +80,11 @@ public class AccountService {
         return genreList;
     }
 
-//=========================================
+ //================================================== 3. Add to Genre Scoreboard ==================================================
 
+    /*
+     * Record Genre from Saved Movie for Recommendations
+     */
     public void addToGenreList (List<Movie> moviesToSaveList, String name) {
         
         //Create new list to hold the genre Ids extracted from the saved movie
@@ -93,7 +101,7 @@ public class AccountService {
         movieRepo.addToGenreList(genreIdList, name);
     }
 
-//==========================================================================================
+ //================================================== 1. Account Stuff ==================================================
 
     public Boolean[] checkUser (String name, String password) {
         Boolean[] isExist = movieRepo.checkUser(name, password);
