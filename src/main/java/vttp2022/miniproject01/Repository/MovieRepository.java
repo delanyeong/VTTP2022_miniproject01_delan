@@ -118,31 +118,31 @@ public class MovieRepository {
         long l = listOp.size(keyName);
         if (l > 0) {
             
-            // Comparator 1 pt1 - empty list of movies for saved in redis
+            // Comparator A #1 - empty list of movies for "saved in redis"
             List<Movie> redisMovies = new LinkedList<>();
 
-            // Comparator 1 pt1 - filled list of movies for saved in redis
+            // Comparator A #1 - filled list of movies for "saved in redis"
             for (int i = 0; i < listOp.size(keyName); i++) {
                 redisMovies.add(Movie.create2(listOp.index(keyName, i)));
             }
 
-            // Comparator 1 pt2 - empty list of movie ids for saved in redis
+            // Comparator A #2 - empty list of movie ids for "saved in redis"
             List<String> redisMoviesIds = new LinkedList<>();
 
-            // Comparator 1 pt2 - filled list of movie ids for saved in redis
+            // Comparator A #2 - filled list of movie ids for "saved in redis"
             for (Movie movie : redisMovies) {
                 redisMoviesIds.add(movie.getId());
             }
 
-            // Comparator 1 pt2 (String id) <-> Comparator 2 pt1 (convert Movie to String id)
-            // (adding difference <Movie> into Comparator 1 pt1)
+            // Comparator A #2 (String id) <-> Comparator B #1 (convert Movie to String id)
+            // (adding difference <Movie> into Comparator A #1)
             for (Movie movie : savedWatchList) {
                 if (!(redisMoviesIds.contains(movie.getId()))) {
                     redisMovies.add(movie);
                 }
             }
 
-            // Clearing saved in redis in Redis Client
+            // Clearing "saved in redis" in Redis Client
             for (Long i = listOp.size(keyName); i > 0; i--) {
                 listOp.rightPop(keyName);
             }
