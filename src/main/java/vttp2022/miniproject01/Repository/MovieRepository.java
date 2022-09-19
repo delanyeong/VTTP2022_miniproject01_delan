@@ -1,6 +1,5 @@
 package vttp2022.miniproject01.Repository;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -28,6 +27,8 @@ public class MovieRepository {
     @Autowired
     @Qualifier("redislab")
     private RedisTemplate<String, String> template;
+
+ //================================================== Movies Stuff ==================================================
     
     // JUST FOR TESTING
     // public void save (List<Movie> savedWatchlist) {
@@ -42,6 +43,14 @@ public class MovieRepository {
     //     }
     // }
 
+    //-------------------------------------------------- saveList1 --------------------------------------------------
+
+    /*
+     * (DEPRECATED : Replaced by saveList2)
+     * TASK: -
+     * FUNCTION: SAVING movie(s)
+     */
+
     // saveList1 IS ADDING W/O CHECKING FOR REPEATS
     // public void saveList1 (List<Movie> savedWatchList) {
     //     String keyName = "savedWatchList";
@@ -51,6 +60,13 @@ public class MovieRepository {
     //         listOp.rightPush(keyName, movie.toJson().toString());
     //     }
     // }
+
+    //-------------------------------------------------- saveList2 --------------------------------------------------
+
+    /*
+     * TASK: -
+     * FUNCTION: SAVING movie(s)
+     */
 
     // Version 1 - saveList2 (IS ADDING W CHECKING FOR REPEATS (W/O USER))
     // public void saveList2 (List<Movie> savedWatchList) {
@@ -130,6 +146,13 @@ public class MovieRepository {
         }
     }
 
+    //-------------------------------------------------- get function --------------------------------------------------
+
+    /*
+     * TASK: -
+     * FUNCTION: Retrieving ALL SAVED movie(s)
+     */
+
     //Version 1 - get (GET ALL SAVED MOVIES FROM DB (W/O USER))
     // public List<Movie> get () {
     //     String keyName = "savedWatchList";
@@ -160,6 +183,13 @@ public class MovieRepository {
 
         return redisMovies;
     }
+
+    //-------------------------------------------------- getMovieId --------------------------------------------------
+
+    /*
+     * TASK: @PATHVARIABLE
+     * FUNCTION: retrieving 1 movie(s)
+     */
 
     //Version 1 - getMovieId (GET PATHVARIABLE MOVIE (W/O USER))
     // public Optional<Movie> getMovieId (String id) {
@@ -197,7 +227,11 @@ public class MovieRepository {
         return Optional.empty();
     }
 
-    //delete function
+    //-------------------------------------------------- Delete Movie function --------------------------------------------------
+
+    /*
+     * Delete Movie function
+     */
     public void delete (String id, String name) {
         String keyName = name;
         ListOperations<String, String> listOp = template.opsForList();
@@ -224,10 +258,11 @@ public class MovieRepository {
 
     }
 
-    // =============================================================================
-    // GenreList
+ //================================================== Genre ScoreBoard ==================================================
     
-    //User Genre Board when user first create account
+    /*
+     * User Genre Board when user first create account
+     */
     public void setUpGenreScore (List<Genre> genreList, String name) {
         String keyName = ">" + name;
         HashOperations<String, String, Integer> hashOp = template.opsForHash();
@@ -242,7 +277,9 @@ public class MovieRepository {
 
     }
 
-    //Add Genre Score when User favourites Movie
+    /*
+     * Add Genre Score when User favourites Movie
+     */
     public void addToGenreList (List<Integer> genreIdList, String name) {
         String keyName = ">" + name;
         HashOperations<String, String, Integer> hashOp = template.opsForHash();
@@ -277,8 +314,11 @@ public class MovieRepository {
         hashOp.putAll(keyName, redisGenreMap);
     }
 
-//============================Recommended
-    //get Genre board scores
+ //================================================== Recommendation Page ==================================================
+    
+    /*
+     * get Genre board scores
+     */
     public List<String> getRec (String name) {
             String keyName = ">" + name;
             HashOperations<String, String, Integer> hashOp = template.opsForHash();
@@ -310,7 +350,9 @@ public class MovieRepository {
 
     }
 
-    //reset score
+    /*
+     * Reset Genre Score
+     */
     public void resetScore (String name) {
         String keyName = ">" + name;
         HashOperations<String, String, Integer> hashOp = template.opsForHash();
@@ -333,11 +375,11 @@ public class MovieRepository {
         System.out.println(hashOp.values(keyName));
     }
     
+ //================================================== 1. Account Stuff ==================================================
 
-
-// =============================================================================
-// User Account and Validation
-
+    /*
+     * Account Validation
+     */
     public Boolean[] checkUser (String name, String password) {
         String redisName = "#" + name;
         ValueOperations<String, String> valueOps = template.opsForValue();
@@ -378,6 +420,9 @@ public class MovieRepository {
         return booleanArray;
     }
 
+    /*
+     * Account Registration
+     */
     public Boolean createAccount (String name, String password) {
         String redisName = "#" + name;
         ValueOperations<String, String> valueOps = template.opsForValue();
@@ -392,8 +437,6 @@ public class MovieRepository {
         }
         return isNameTaken;
     }
-
-    
 
 }
 
