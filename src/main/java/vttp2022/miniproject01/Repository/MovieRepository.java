@@ -110,7 +110,7 @@ public class MovieRepository {
     // Version 2 - saveList2 (IS ADDING W CHECKING FOR REPEATS (W USER))
     public void saveList2 (List<Movie> savedWatchList, String name) {
 
-        // access redis key-pair : <name>
+        // ACCESS REDIS KEY-PAIR: <NAME>
         String keyName = name;
         ListOperations<String, String> listOp = template.opsForList();
 
@@ -182,15 +182,22 @@ public class MovieRepository {
 
     //Version 2 - get (GET ALL SAVED MOVIES FROM DB (W USER))
     public List<Movie> get (String name) {
+
+        // ACCESS REDIS KEY-PAIR: <NAME>
         String keyName = name;
         ListOperations<String, String> listOp = template.opsForList();
         
+        // Checking if user has movielist in database (first login/setup right after register)
+        // weird initial check, but UsernamePassword key-pair + GenreScoreboard key-pair done already before calling Trend API when signup
         if (!template.hasKey(name)) {
             listOp.rightPush(name, "");
             listOp.rightPop(name);
         }
         
+        // Empty list of movies for "saved in redis"
         List<Movie> redisMovies = new LinkedList<>();
+
+        // Filled list of movies for "saved in redis"
         for (int i = 0; i < listOp.size(keyName); i++) {
             redisMovies.add(Movie.create2(listOp.index(keyName, i)));
         }
