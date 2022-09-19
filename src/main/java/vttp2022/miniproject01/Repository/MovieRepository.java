@@ -109,36 +109,50 @@ public class MovieRepository {
 
     // Version 2 - saveList2 (IS ADDING W CHECKING FOR REPEATS (W USER))
     public void saveList2 (List<Movie> savedWatchList, String name) {
+
+        // access redis key-pair : <name>
         String keyName = name;
         ListOperations<String, String> listOp = template.opsForList();
 
+        // checking for repeats if there are saved movies
         long l = listOp.size(keyName);
         if (l > 0) {
             
+            // Comparator 1 pt1 - empty list of movies for saved in redis
             List<Movie> redisMovies = new LinkedList<>();
 
+            // Comparator 1 pt1 - filled list of movies for saved in redis
             for (int i = 0; i < listOp.size(keyName); i++) {
                 redisMovies.add(Movie.create2(listOp.index(keyName, i)));
             }
 
+            // Comparator 1 pt2 - empty list of movie ids for saved in redis
             List<String> redisMoviesIds = new LinkedList<>();
+
+            // Comparator 1 pt2 - filled list of movie ids for saved in redis
             for (Movie movie : redisMovies) {
                 redisMoviesIds.add(movie.getId());
             }
 
+            // Comparator 1 pt2 (String id) <-> Comparator 2 pt1 (convert Movie to String id)
+            // (adding difference <Movie> into Comparator 1 pt1)
             for (Movie movie : savedWatchList) {
                 if (!(redisMoviesIds.contains(movie.getId()))) {
                     redisMovies.add(movie);
                 }
             }
 
+            // Clearing saved in redis in Redis Client
             for (Long i = listOp.size(keyName); i > 0; i--) {
                 listOp.rightPop(keyName);
             }
             
+            // Add updated movie list into redis
             for (Movie movie : redisMovies) {
                 listOp.rightPush(keyName, movie.toJson().toString());
             }
+
+        // if nothing in database, just add without checking for repeats
         } else {
             for (Movie movie : savedWatchList) {
                 listOp.rightPush(keyName, movie.toJson().toString());
