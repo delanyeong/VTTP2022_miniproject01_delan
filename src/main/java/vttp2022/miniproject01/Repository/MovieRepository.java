@@ -485,15 +485,17 @@ public class MovieRepository {
         // valueOps.set(redisName, password);
         
         // create boolean variable to check if registered name is taken
-        Boolean isNameTaken = null;
+        // Boolean isNameTaken = null;
         
         if (template.hasKey(redisName)) {
-            return isNameTaken = true;
+            // return isNameTaken = true;
+            return true;
         } else {
-            isNameTaken = false; 
+            // isNameTaken = false; 
             valueOps.set(redisName, password);
+            // return isNameTaken = false;
+            return false;
         }
-        return isNameTaken;
     }
 
 }

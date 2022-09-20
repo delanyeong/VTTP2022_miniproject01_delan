@@ -77,15 +77,23 @@ public class AccountController {
         String name = form.getFirst("name");
         String password = form.getFirst("password");
 
-        accountSvc.createAccount(name, password);
+        // accountSvc.createAccount(name, password);
+        Boolean isNameTaken = accountSvc.createAccount(name, password);
 
-        // Attribute for Database Access + UI
-        sess.setAttribute("name", name);
+        if (isNameTaken == true) {
+            model.addAttribute("loginerror", "Name is not available. Please try another");
+            return "register";
+        } else {
 
-        // Attribute for Returning Same Page after Favouriting Movie (trend/search/recommend)
-        sess.setAttribute("page", "trend"); 
-
-        return "redirect:/home";
+            
+            // Attribute for Database Access + UI
+            sess.setAttribute("name", name);
+            
+            // Attribute for Returning Same Page after Favouriting Movie (trend/search/recommend)
+            sess.setAttribute("page", "trend"); 
+            
+            return "redirect:/home";
+        }
     }
 
 }

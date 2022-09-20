@@ -111,12 +111,15 @@ public class AccountService {
     public Boolean createAccount (String name, String password) {
 
         //GENRE
-        if (!movieRepo.createAccount(name, password)) {      //if register user is available
+        if (movieRepo.createAccount(name, password) == false) {      //if register user is available
             List<Genre> genreList = setUpGenreScore(name);  //get latest Genre List from API
             movieRepo.setUpGenreScore(genreList, name);     //use latest Genre List to create User Score Board
+            return false;
+        } else {
+            return true;
         }
         
-        return movieRepo.createAccount(name, password);
+        // return movieRepo.createAccount(name, password);
     }
 
 }
