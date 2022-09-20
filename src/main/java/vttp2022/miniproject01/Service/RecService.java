@@ -27,7 +27,7 @@ public class RecService {
     @Autowired
     private MovieRepository movieRepo;
 
-//==========================================================================================
+//================================================== Discover (Recommend) API Call ==================================================
     
     @Value("${API_KEY}")
     private String key;
@@ -80,18 +80,21 @@ public class RecService {
         return recMovieList;
     }
 
-//==========================================================================================
+//====================================================================================================
 
+    // Top Genre Id
     public String getGenreIdsAPI (String name) {
         List<String> recKeys = movieRepo.getRec(name);
         
         return recKeys.get(0);
     }
 
+    // get your WatchList for indicating already favourited in Recommend page
     public List<Movie> get (String name) {
         return movieRepo.get(name);
     }
 
+    // reset scoreboard
     public void resetScore (String name) {
         movieRepo.resetScore(name);
     }
