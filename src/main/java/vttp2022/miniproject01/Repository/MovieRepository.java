@@ -299,11 +299,15 @@ public class MovieRepository {
      * User Genre Board when user first create account
      */
     public void setUpGenreScore (List<Genre> genreList, String name) {
+
+        // ACCESS REDIS KEY-VALUE: ><NAME> , Genre Scoreboard (HashOps)
         String keyName = ">" + name;
         HashOperations<String, String, Integer> hashOp = template.opsForHash();
 
+        // create variable for starting value
         Integer startValue = 0;
 
+        // populate user's genre scoreboard with KEY: Genre API call data, VALUE: 0
         for (Genre genre : genreList) {
             hashOp.put(keyName, genre.getGenreId().toString(), startValue);
         }
@@ -316,26 +320,28 @@ public class MovieRepository {
      * Add Genre Score when User favourites Movie
      */
     public void addToGenreList (List<Integer> genreIdList, String name) {
+
+        // ACCESS REDIS KEY-VALUE: ><NAME> , Genre Scoreboard (HashOps)
         String keyName = ">" + name;
         HashOperations<String, String, Integer> hashOp = template.opsForHash();
 
-        //call hashmap from redis
+        // call keys and values in hashmap from redis
         Set<String> keys = hashOp.keys(keyName);
         System.out.println("These are KEYS from the Genre ScoreBoard HashMap: " + keys);
         Object[] keysArray = keys.toArray();
         List<Integer> values = hashOp.values(keyName);
         System.out.println("These are VALUES from the Genre ScoreBoard HashMap: " + values);
         
-        //create hashmap 
+        // create hashmap 
         Map<String, Integer> redisGenreMap  = new HashMap<String, Integer>();
 
+        // populate hashmap with called keys and values
         for (int i = 0; i < keys.size(); i++) {
             redisGenreMap.put(keysArray[i].toString(), values.get(i));
         }
 
         //edit the hashmap before returning it back to redis
-        // if id matches with id in hashmap, add the count 
-
+        // if Id (adding score) matches with Id in hashmap, add the count 
         for (Integer i : genreIdList) {
             if (redisGenreMap.containsKey(i.toString())) {
                 Integer intString = redisGenreMap.get(i.toString());
@@ -345,7 +351,6 @@ public class MovieRepository {
         }
 
         //return it back to redis
-
         hashOp.putAll(keyName, redisGenreMap);
     }
 
@@ -355,26 +360,33 @@ public class MovieRepository {
      * get Genre board scores
      */
     public List<String> getRec (String name) {
-            String keyName = ">" + name;
-            HashOperations<String, String, Integer> hashOp = template.opsForHash();
 
-            //call hashmap from redis
-            Set<String> keys = hashOp.keys(keyName);
-            Object[] keysArray = keys.toArray();
-            List<Integer> values = hashOp.values(keyName);
+        // ACCESS REDIS KEY-VALUE: ><NAME> , Genre Scoreboard (HashOps)
+        String keyName = ">" + name;
+        HashOperations<String, String, Integer> hashOp = template.opsForHash();
+
+        // call keys and values in hashmap from redis
+        Set<String> keys = hashOp.keys(keyName);
+        Object[] keysArray = keys.toArray();
+        List<Integer> values = hashOp.values(keyName);
             
-            //create hashmap 
-            Map<String, Integer> redisGenreMap  = new HashMap<String, Integer>();
+        //create hashmap 
+        Map<String, Integer> redisGenreMap  = new HashMap<String, Integer>();
 
-            for (int i = 0; i < keys.size(); i++) {
-                redisGenreMap.put(keysArray[i].toString(), values.get(i));
-            }
+        // populate hashmap with called keys and values
+        for (int i = 0; i < keys.size(); i++) {
+            redisGenreMap.put(keysArray[i].toString(), values.get(i));
+        }
 
-            Integer max = Collections.max(redisGenreMap.values());
+        // create variable for max value
+        Integer max = Collections.max(redisGenreMap.values());
 
-            List<String> recKeys = new ArrayList<>();
-            for (Entry<String, Integer> entry : redisGenreMap.entrySet()) {
-                if (entry.getValue()==max) {
+        // empty list to store Top Genre Id
+        List<String> recKeys = new ArrayList<>();
+
+        // filled list with Top Genre Id
+        for (Entry<String, Integer> entry : redisGenreMap.entrySet()) {
+            if (entry.getValue()==max) {
                 recKeys.add(entry.getKey());
             }
         }
@@ -389,21 +401,25 @@ public class MovieRepository {
      * Reset Genre Score
      */
     public void resetScore (String name) {
+
+        // ACCESS REDIS KEY-VALUE: ><NAME> , Genre Scoreboard (HashOps)
         String keyName = ">" + name;
         HashOperations<String, String, Integer> hashOp = template.opsForHash();
 
-        //call hashmap from redis
+        // call keys and values in hashmap from redis
         Set<String> keys = hashOp.keys(keyName);
         Object[] keysArray = keys.toArray();
         // List<Integer> values = hashOp.values(keyName);
          
-        //create hashmap 
+        // create hashmap 
         Map<String, Integer> redisGenreMap  = new HashMap<String, Integer>();
 
+        // replacing all values of each key in hashmap with 0
         for (int i = 0; i < keys.size(); i++) {
             redisGenreMap.put(keysArray[i].toString(), 0);
         }
 
+        // replace existing hashmap in redis with KEY:<genretype>, VALUE:<score(Integer)> = 0
         hashOp.putAll(keyName, redisGenreMap);
 
         System.out.println(hashOp.keys(keyName));
@@ -416,19 +432,22 @@ public class MovieRepository {
      * Account Validation
      */
     public Boolean[] checkUser (String name, String password) {
+
+        // ACCESS REDIS KEY-VALUE: #<NAME> , Username-Password (ValueOps)
         String redisName = "#" + name;
         ValueOperations<String, String> valueOps = template.opsForValue();
+
+        // create boolean variable to check if user exists
         Boolean isExist = template.hasKey(redisName);
+
+        //create boolean array to return result used for "Authentication" case scenario in Account Controller
         Boolean[] booleanArray = new Boolean[2];
         booleanArray[0] = null;
         booleanArray[1] = null;
 
-        //have name but wrong password
-
-        //have name and correct password
-
-        //dont have name 
-
+        // CASE 1: Username CORRECT, Password CORRECT - true, true
+        // CASE 2: Username CORRECT, Password WRONG - true, false
+        // CASE 3: Username WRONG, Password WRONG - false, false
         if (isExist) {
             booleanArray[0] = true;
             String redisPassword = valueOps.get(redisName);
@@ -459,9 +478,13 @@ public class MovieRepository {
      * Account Registration
      */
     public Boolean createAccount (String name, String password) {
+
+        // ACCESS REDIS KEY-VALUE: #<NAME> , Username-Password (ValueOps)
         String redisName = "#" + name;
         ValueOperations<String, String> valueOps = template.opsForValue();
         // valueOps.set(redisName, password);
+        
+        // create boolean variable to check if registered name is taken
         Boolean isNameTaken = null;
         
         if (template.hasKey(redisName)) {
