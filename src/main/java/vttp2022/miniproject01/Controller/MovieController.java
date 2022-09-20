@@ -2,13 +2,13 @@ package vttp2022.miniproject01.Controller;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
+// import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+// import org.springframework.http.HttpStatus;
+// import org.springframework.http.MediaType;
+// import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,11 +18,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+// import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import jakarta.json.Json;
-import jakarta.json.JsonObject;
+// import jakarta.json.Json;
+// import jakarta.json.JsonObject;
 import vttp2022.miniproject01.Model.Movie;
 import vttp2022.miniproject01.Service.AccountService;
 import vttp2022.miniproject01.Service.MovieService;
@@ -34,22 +34,29 @@ public class MovieController {
     @Autowired
     private MovieService movieSvc;
 
-    //genre
+    //GENRE
     @Autowired
     private AccountService accSvc;
 
+    /*
+     * /home landing page - first landing page
+     * 1. trending movies from Trending API
+     * 2. filtering to indicate which movies are already favourited
+     * 
+     */
     @GetMapping (path="home")
     public String getTrendMovies (Model model, HttpSession sess) {
         
-        model.addAttribute("name", (String)sess.getAttribute("name"));
+        model.addAttribute("name", (String)sess.getAttribute("name")); //for navbar greeting
+
+//====================================================================================================
+        // 2. (Right after logging in) to check Trending api call with your WatchList - for the favourite icon
         
-        if (null != (String) sess.getAttribute("name")) {
-            List<Movie> trendMovieList = movieSvc.getTrendMovies();
-            List<Movie> watchlistmovies = movieSvc.get((String)sess.getAttribute("name"));
+        if (null != (String)sess.getAttribute("name")) { // if user is logged in
+            List<Movie> trendMovieList = movieSvc.getTrendMovies(); // Trending API movies
+            List<Movie> watchlistmovies = movieSvc.get((String)sess.getAttribute("name")); // your WatchList movies
 
-
-
-            List<Movie> moviesFavourited = trendMovieList.stream()                          //create new list of movies from list of movies based on list of Ids
+            List<Movie> moviesFavourited = trendMovieList.stream() 
             .filter(movieObj -> {
                 for (Movie i: watchlistmovies) {
                     if ((i.getId()).equals(movieObj.getId())) {
@@ -60,35 +67,36 @@ public class MovieController {
             })
             .toList();
 
-            System.out.println("moviesFavourited: " + moviesFavourited.toString());
+            System.out.println("moviesFavourited: " + moviesFavourited.toString()); //name of movies favourited
 
             List<String> trendMovieListId = new LinkedList<>();
             for (Movie movie : trendMovieList) {
                 trendMovieListId.add(movie.getId());
             }
 
-            System.out.println("trendMovieListId: " + trendMovieListId.toString());
+            System.out.println("trendMovieListId: " + trendMovieListId.toString()); //id of movies from Trending API
 
             List<String> moviesFavouritedId = new LinkedList<>();
             for (Movie movie : moviesFavourited) {
-                moviesFavouritedId.add(movie.getId());
+                moviesFavouritedId.add(movie.getId()); 
             }
-
-            System.out.println("moviesFavourited2: " + moviesFavouritedId.toString());
+            
+            System.out.println("moviesFavourited2: " + moviesFavouritedId.toString()); //id of movies favourited
+//====================================================================================================
 
             sess.setAttribute("movies", trendMovieList);
-            model.addAttribute("trendMovieList", trendMovieList);
-            
 
+            model.addAttribute("trendMovieList", trendMovieList);
             model.addAttribute("trendMovieListId", trendMovieListId);
             model.addAttribute("moviesFavouritedId", moviesFavouritedId);
         }
 
-
-
         return "trendpage";
     }
 
+    /*
+     * WatchList page
+     */
     @GetMapping (path="home/mywatchlist")
     public String watchlistpage (HttpSession sess, Model model) {
         List<Movie> watchlistmovies = movieSvc.get((String)sess.getAttribute("name"));
@@ -97,9 +105,15 @@ public class MovieController {
         return "watchlistpage";
     }
 
+    /*
+     * Favourite Movie
+     */
     @PostMapping (path="home/savetrend")
     public String postMovies
     (@RequestBody MultiValueMap<String, String> form, Model model, HttpSession sess) {
+
+//====================================================================================================
+        // 2. (subsequent saves) to check Trending api call with your WatchList - for the favourite icon
         List<Movie> savedMovieList = (List<Movie>)sess.getAttribute("movies"); //takes list of movies saved from Session
         List<String> saveIds = form.get("movieId");                             //gets list of Ids from form 
         System.out.println(">>>>>>>>>>>>>>>>>>>>>> saveIds: " + saveIds);
@@ -116,28 +130,32 @@ public class MovieController {
         if (moviesToSave.size() > 0) {                                              //save new list of movies to Repo if it's not empty
             movieSvc.save(moviesToSave, (String)sess.getAttribute("name"));
         }
+//====================================================================================================
 
-        //GENRE
+        //GENRE - when favouriting, add to scoreboard
         accSvc.addToGenreList(moviesToSave, (String)sess.getAttribute("name"));
 
-        System.out.println("THIS IS THE QUERY " + sess.getAttribute("query"));
+        //To determine where to return (Trending/Search/Recommended)
+        System.out.println("THIS IS THE QUERY " + sess.getAttribute("query")); //for Search page
         System.out.println("THIS IS THE PAGE " + sess.getAttribute("page"));
 
         if (sess.getAttribute("page").equals("search")) {
-            String URL = "/search/movie";
+
+            String URL = "/search/movie"; // CASE 1: Search page - return to it by building the query string url again from the keyword searched
             String url = UriComponentsBuilder.fromUriString(URL)
                 .queryParam("query", sess.getAttribute("query"))
                 .toUriString();
-            sess.setAttribute("page", "trend");
+            sess.setAttribute("page", "trend"); //reset to return to default Trending Page
             System.out.println("THIS IS THE PAGE " + sess.getAttribute("page"));
             return "redirect:" + url;
-        } else if (sess.getAttribute("page").equals("recommend")) {
-            sess.setAttribute("page", "trend");
+
+        } else if (sess.getAttribute("page").equals("recommend")) { //CASE 2: Recommended page
+            sess.setAttribute("page", "trend"); //reset to return to default Trending Page
             return "redirect:/recommended";
         } else {
 
             // return "redirect:/home/mywatchlist";
-            return "redirect:/home";
+            return "redirect:/home"; //CASE 3: (default) Trending page
         }
 
     }
@@ -159,6 +177,10 @@ public class MovieController {
     //     return "singlecontent";
     // }
 
+
+    /*
+     * @PathVariable page (NOT just JSON)
+     */
     @GetMapping (path="home/{id}")
     public String getMovieId
     (@PathVariable String id, Model model, HttpSession sess) {
@@ -179,7 +201,9 @@ public class MovieController {
         return "singlecontent";
     }
 
-    //delete
+    /*
+     * Delete
+     */
     @GetMapping (path="home/mywatchlist/delete/{id}")
     public String getWatchlistId
     (@PathVariable String id, Model model, HttpSession sess) {
@@ -199,7 +223,9 @@ public class MovieController {
         return "redirect:/home/mywatchlist";
     }
 
-
+    /*
+     * Logout
+     */
     @GetMapping (path="logout")
     public String logout (HttpSession sess, Model model) {
         model.addAttribute("name", (String)sess.getAttribute("name"));

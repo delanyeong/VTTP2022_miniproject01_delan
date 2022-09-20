@@ -24,7 +24,9 @@ public class MovieRestController {
     @Autowired
     private MovieService movieSvc;
 
-    //version 2
+    /*
+     * @PathVariable page (JUST JSON)
+     */
     @GetMapping (path="home/mywatchlist/{id}", produces=MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getWatchlistId
     (@PathVariable String id, Model model, HttpSession sess) {
