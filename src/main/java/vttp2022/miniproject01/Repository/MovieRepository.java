@@ -110,7 +110,7 @@ public class MovieRepository {
     // Version 2 - saveList2 (IS ADDING W CHECKING FOR REPEATS (W USER))
     public void saveList2 (List<Movie> savedWatchList, String name) {
 
-        // ACCESS REDIS KEY-PAIR: <NAME>
+        // ACCESS REDIS KEY-PAIR: <NAME> , Movies (ListOps)
         String keyName = name;
         ListOperations<String, String> listOp = template.opsForList();
 
@@ -183,7 +183,7 @@ public class MovieRepository {
     //Version 2 - get (GET ALL SAVED MOVIES FROM DB (W USER))
     public List<Movie> get (String name) {
 
-        // ACCESS REDIS KEY-PAIR: <NAME>
+        // ACCESS REDIS KEY-PAIR: <NAME> , Movies (ListOps)
         String keyName = name;
         ListOperations<String, String> listOp = template.opsForList();
         
@@ -232,14 +232,20 @@ public class MovieRepository {
 
     //Version 2 - getMovieId (GET PATHVARIABLE MOVIE (W USER))
     public Optional<Movie> getMovieId (String id, String name) {
+
+        // ACCESS REDIS KEY-PAIR: <NAME> , Movies (ListOps)
         String keyName = name;
         ListOperations<String, String> listOp = template.opsForList();
+
+        // Empty list of movies for "saved in redis"
         List<Movie> redisMovies = new LinkedList<>();
 
+        // Filled list of movies for "saved in redis"
         for (int i = 0; i < listOp.size(keyName); i++) {
             redisMovies.add(Movie.create2(listOp.index(keyName, i)));
         }
 
+        // Check thru "saved in redis" for matching id and return Movie in a list (redisMovies)
         for (int i = 0; i < redisMovies.size(); i++) {
             if (redisMovies.get(i).getId().equals(id)) {
                 return Optional.of(redisMovies.get(i));
@@ -254,14 +260,20 @@ public class MovieRepository {
      * Delete Movie function
      */
     public void delete (String id, String name) {
+
+        // ACCESS REDIS KEY-PAIR: <NAME> , Movies (ListOps)
         String keyName = name;
         ListOperations<String, String> listOp = template.opsForList();
+
+        // Empty list of movies for "saved in redis"
         List<Movie> redisMovies = new LinkedList<>();
 
+        // Filled list of movies for "saved in redis"
         for (int i = 0; i < listOp.size(keyName); i++) {
             redisMovies.add(Movie.create2(listOp.index(keyName, i)));
         }
 
+        // Check thru "saved in redis" for matching id and deleting Movie in the list (redisMovies)
         for (Movie movie : redisMovies) {
             if ((movie.getId()).equals(id)) {
                 redisMovies.remove(movie);
@@ -269,10 +281,12 @@ public class MovieRepository {
             }
         }
 
+        // Clearing "saved in redis" in Redis Client
         for (Long i = listOp.size(keyName); i > 0; i--) {
             listOp.rightPop(keyName);
         }
         
+        // Add updated movie list into redis
         for (Movie movie : redisMovies) {
             listOp.rightPush(keyName, movie.toJson().toString());
         }
