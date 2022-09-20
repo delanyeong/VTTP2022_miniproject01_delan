@@ -26,6 +26,8 @@ public class MovieService {
 
     @Autowired
     private MovieRepository movieRepo;
+
+//================================================== Movie API Call ==================================================
     
     @Value("${API_KEY}")
     private String key;
@@ -73,18 +75,21 @@ public class MovieService {
         return trendMovieList;
     }
 
-    //=================================================================
+//====================================================================================================
 
+    //favourite/save movie
     public void save (List<Movie> savedMovieList, String name) {
         // movieRepo.save(savedMovieList);
         movieRepo.saveList2(savedMovieList, name);
         System.out.println("Movie Saved");
     }
 
+    //showing your WatchList
     public List<Movie> get (String name) {
         return movieRepo.get(name);
     }
 
+    //@PathVariable
     public Optional<Movie> getMovieId (String id, String name) {
         return movieRepo.getMovieId(id, name);
     }
