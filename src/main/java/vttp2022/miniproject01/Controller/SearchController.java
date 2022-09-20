@@ -25,24 +25,24 @@ public class SearchController {
     @Autowired
     private MovieService movieSvc;
     
-    @GetMapping
-    public String searchPage () {
-        return "searchresult";
-    }
+    // @GetMapping
+    // public String searchPage () {
+    //     return "searchresult";
+    // }
 
+    /*
+     * /search/movie landing page (after input in search bar from anywhere)
+     */
     @GetMapping (path="movie")
-    public String searchMovies
-    (@RequestParam String query,
-    Model model,
-    HttpSession sess) {
-        List<Movie> searchMovieList = searchSvc.searchMovies(query);            //initial api call for Search API
-        sess.setAttribute("movies", searchMovieList);                     // i forgot why - i think not needed, prev ver.
+    public String searchMovies (@RequestParam String query, Model model, HttpSession sess) {
+        List<Movie> searchMovieList = searchSvc.searchMovies(query);
+        sess.setAttribute("movies", searchMovieList);
         
-        model.addAttribute("searchMovieList", searchMovieList);  // for View
-        model.addAttribute("query", query);                      // for View
+        model.addAttribute("searchMovieList", searchMovieList);
+        model.addAttribute("query", query); //for UI to show what was searched and use for returning back to the same search results page
 
-//==========================================================================================
-// to check api call movie list (initial) with redisMovies - for the favourite icon
+//====================================================================================================
+        // 2. to check Search api call with your WatchList - for the favourite icon
         List<Movie> watchlistmovies = movieSvc.get((String)sess.getAttribute("name"));
         List<Movie> moviesFavourited = searchMovieList.stream()                //create new list of movies from list of movies based on list of Ids
             .filter(movieObj -> {
@@ -61,13 +61,16 @@ public class SearchController {
         }
 
         model.addAttribute("moviesFavouritedId", moviesFavouritedId);
-//==========================================================================================
+//====================================================================================================
         
-        model.addAttribute("name", (String)sess.getAttribute("name"));
+        model.addAttribute("name", (String)sess.getAttribute("name")); // for navbar greeting
         return "searchresult";
     }
     
-// endpoint used to forward to original endpoint for saving movies (from search to trend)
+    /*
+     * Favourite Movie
+     * endpoint used to forward to original endpoint for saving movies (from SearchController to MovieController)
+     */
     @PostMapping (path="savesearch")
     public String forwardToWatchlist (@RequestParam String query, HttpSession sess) {
         sess.setAttribute("query", query);          // use for returning back to search result page after saving movie
@@ -75,6 +78,10 @@ public class SearchController {
         return "forward:/home/savetrend";
     }
 
+    /*
+     * @PathVariable
+     * endpoint used to forward to original endpoint for @PathVariable (from SearchController to MovieController)
+     */
     @GetMapping (path="{id}")
     public String getSearchId (@PathVariable String id) {
         return "forward:/home/{id}";

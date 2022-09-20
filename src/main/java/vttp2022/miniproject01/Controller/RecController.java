@@ -80,7 +80,7 @@ public class RecController {
 
     /*
      * Favourite Movie
-     * endpoint used to forward to original endpoint for saving movies (from searchController to trendController)
+     * endpoint used to forward to original endpoint for saving movies (from RecController to MovieController)
      */
     @PostMapping (path="/recommended/savesearch")
     public String forwardToWatchlist (HttpSession sess) {
