@@ -50,12 +50,15 @@ public class MovieController {
         model.addAttribute("name", (String)sess.getAttribute("name")); //for navbar greeting
 
 //====================================================================================================
-        // 2. (Right after logging in) to check Trending api call with your WatchList - for the favourite icon
+        // 2. (RIGHT AFTER LOGGING IN) to check Trending api call with your WatchList - for the favourite icon
         
         if (null != (String)sess.getAttribute("name")) { // if user is logged in
             List<Movie> trendMovieList = movieSvc.getTrendMovies(); // Trending API movies
             List<Movie> watchlistmovies = movieSvc.get((String)sess.getAttribute("name")); // your WatchList movies
 
+            /*
+             * Comparing with trending API List<Movie>.getId() for fave icon - PART 1
+             */
             List<Movie> moviesFavourited = trendMovieList.stream() 
             .filter(movieObj -> {
                 for (Movie i: watchlistmovies) {
@@ -66,29 +69,33 @@ public class MovieController {
                 return false;
             })
             .toList();
+            System.out.println("moviesFavourited: " + moviesFavourited.toString()); //Java Object name of movies favourited
 
-            System.out.println("moviesFavourited: " + moviesFavourited.toString()); //name of movies favourited
-
+            /*
+             * DONT REALLY NEED JUST FOR CHECKING
+             */
             List<String> trendMovieListId = new LinkedList<>();
             for (Movie movie : trendMovieList) {
                 trendMovieListId.add(movie.getId());
             }
-
             System.out.println("trendMovieListId: " + trendMovieListId.toString()); //id of movies from Trending API
 
+            /*
+             * Comparing with trending API List<Movie>.getId() for fave icon - PART 2
+             */
             List<String> moviesFavouritedId = new LinkedList<>();
             for (Movie movie : moviesFavourited) {
                 moviesFavouritedId.add(movie.getId()); 
             }
-            
             System.out.println("moviesFavourited2: " + moviesFavouritedId.toString()); //id of movies favourited
+
 //====================================================================================================
 
-            sess.setAttribute("movies", trendMovieList);
+            sess.setAttribute("movies", trendMovieList); // MIGHT BE NEEDED DONT DELETE - to be used for filtering articles to show saveArticles from all articles
 
-            model.addAttribute("trendMovieList", trendMovieList);
-            model.addAttribute("trendMovieListId", trendMovieListId);
-            model.addAttribute("moviesFavouritedId", moviesFavouritedId);
+            model.addAttribute("trendMovieList", trendMovieList); // Populating page with trending movies at Trending page
+            model.addAttribute("trendMovieListId", trendMovieListId); // DONT REALLY NEED JUST FOR CHECKING
+            model.addAttribute("moviesFavouritedId", moviesFavouritedId); // Comparing with trending API List<Movie>.getId() for icon - PART 3
         }
 
         return "trendpage";
@@ -107,6 +114,7 @@ public class MovieController {
 
     /*
      * Favourite Movie
+     * button click will send movie Id to here and save in a List<String> but only contain one element
      */
     @PostMapping (path="home/savetrend")
     public String postMovies
