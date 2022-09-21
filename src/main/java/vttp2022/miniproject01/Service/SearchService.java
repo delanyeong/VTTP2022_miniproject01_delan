@@ -5,7 +5,6 @@ import java.io.StringReader;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-// import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -17,13 +16,9 @@ import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
 import vttp2022.miniproject01.Model.Movie;
-// import vttp2022.miniproject01.Repository.MovieRepository;
 
 @Service
 public class SearchService {
-    
-    // @Autowired
-    // private MovieRepository movieRepo;
 
 //================================================== Search API Call ==================================================
 
