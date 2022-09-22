@@ -312,7 +312,7 @@ public class MovieRepository {
             hashOp.put(keyName, genre.getGenreId().toString(), startValue);
         }
 
-        System.out.println("User Genre Chart is set up successfully.");
+        // System.out.println("User Genre Chart is set up successfully."); //commented
 
     }
 
@@ -327,10 +327,10 @@ public class MovieRepository {
 
         // call keys and values in hashmap from redis
         Set<String> keys = hashOp.keys(keyName);
-        System.out.println("These are KEYS from the Genre ScoreBoard HashMap: " + keys);
+        // System.out.println("These are KEYS from the Genre ScoreBoard HashMap: " + keys); //commented
         Object[] keysArray = keys.toArray();
         List<Integer> values = hashOp.values(keyName);
-        System.out.println("These are VALUES from the Genre ScoreBoard HashMap: " + values);
+        // System.out.println("These are VALUES from the Genre ScoreBoard HashMap: " + values); //commented
         
         // create hashmap 
         Map<String, Integer> redisGenreMap  = new HashMap<String, Integer>();
@@ -391,7 +391,7 @@ public class MovieRepository {
             }
         }
 
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>This is recKeys movieRepo278: " + recKeys);
+        // System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>This is recKeys movieRepo278: " + recKeys); //commented
 
         return recKeys;
 
@@ -422,8 +422,8 @@ public class MovieRepository {
         // replace existing hashmap in redis with KEY:<genretype>, VALUE:<score(Integer)> = 0
         hashOp.putAll(keyName, redisGenreMap);
 
-        System.out.println(hashOp.keys(keyName));
-        System.out.println(hashOp.values(keyName));
+        // System.out.println(hashOp.keys(keyName)); //commented
+        // System.out.println(hashOp.values(keyName)); //commented
     }
     
  //================================================== 1. Account Stuff ==================================================

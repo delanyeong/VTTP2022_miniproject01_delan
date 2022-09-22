@@ -62,7 +62,7 @@ public class MovieController {
                 return false;
             })
             .toList();
-            System.out.println("moviesFavourited: " + moviesFavourited.toString()); //Java Object name of movies favourited
+            // System.out.println("moviesFavourited: " + moviesFavourited.toString()); //Java Object name of movies favourited - commented
 
             /*
              * DONT REALLY NEED JUST FOR CHECKING
@@ -71,7 +71,7 @@ public class MovieController {
             for (Movie movie : trendMovieList) {
                 trendMovieListId.add(movie.getId());
             }
-            System.out.println("trendMovieListId: " + trendMovieListId.toString()); //id of movies from Trending API
+            // System.out.println("trendMovieListId: " + trendMovieListId.toString()); //id of movies from Trending API - commented
 
             /*
              * Comparing with trending API List<Movie>.getId() for fave icon - PART 2
@@ -80,7 +80,7 @@ public class MovieController {
             for (Movie movie : moviesFavourited) {
                 moviesFavouritedId.add(movie.getId()); 
             }
-            System.out.println("moviesFavourited2: " + moviesFavouritedId.toString()); //id of movies favourited
+            // System.out.println("moviesFavourited2: " + moviesFavouritedId.toString()); //id of movies favourited - commented
 
 //====================================================================================================
 
@@ -117,7 +117,7 @@ public class MovieController {
         // 2. (subsequent saves) to check Trending api call with your WatchList - for the favourite icon
         List<Movie> savedMovieList = (List<Movie>)sess.getAttribute("movies"); //takes list of movies saved from Session
         List<String> saveIds = form.get("movieId");                             //gets list of Ids from form 
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>> saveIds: " + saveIds);
+        // System.out.println(">>>>>>>>>>>>>>>>>>>>>> saveIds: " + saveIds); // commented
         List<Movie> moviesToSave = savedMovieList.stream()                          //create new list of movies from list of movies based on list of Ids
             .filter(movieObj -> {
                 for (String i: saveIds) {
@@ -137,8 +137,8 @@ public class MovieController {
         accSvc.addToGenreList(moviesToSave, (String)sess.getAttribute("name"));
 
         //To determine where to return (Trending/Search/Recommended)
-        System.out.println("THIS IS THE QUERY " + sess.getAttribute("query")); //for Search page
-        System.out.println("THIS IS THE PAGE " + sess.getAttribute("page"));
+        // System.out.println("THIS IS THE QUERY " + sess.getAttribute("query")); //for Search page - commented
+        // System.out.println("THIS IS THE PAGE " + sess.getAttribute("page")); // commented
 
         if (sess.getAttribute("page").equals("search")) {
 
@@ -147,7 +147,7 @@ public class MovieController {
                 .queryParam("query", sess.getAttribute("query"))
                 .toUriString();
             sess.setAttribute("page", "trend"); //reset to return to default Trending Page
-            System.out.println("THIS IS THE PAGE " + sess.getAttribute("page"));
+            // System.out.println("THIS IS THE PAGE " + sess.getAttribute("page")); // commented
             return "redirect:" + url;
 
         } else if (sess.getAttribute("page").equals("recommend")) { //CASE 2: Recommended page
@@ -186,7 +186,7 @@ public class MovieController {
     public String getMovieId
     (@PathVariable String id, Model model, HttpSession sess) {
         List<Movie> savedMovieList = (List<Movie>)sess.getAttribute("movies"); //takes list of movies saved from Session
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>> id: " + id);
+        // System.out.println(">>>>>>>>>>>>>>>>>>>>>> id: " + id); //commented
         List<Movie> singleMovie = savedMovieList.stream()                          //create new list of movies from list of movies based on list of Ids
             .filter(movieObj -> {
                     if (id.equals(movieObj.getId())) {

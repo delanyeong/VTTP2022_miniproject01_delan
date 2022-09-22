@@ -101,11 +101,11 @@
                     <!--ADD CLASSES HERE d-flex align-items-stretch-->
                     <div class="col-lg-4 mb-3 d-flex align-items-stretch" data-th-each="w: ${searchMovieList}">
                         <div class="card">
-                            <a th:href="@{home/{id}(id = ${w.id})}">
+                            <!-- <a th:href="@{home/{id}(id = ${w.id})}"> -->
                                 <img class="card-img-top"
                                     data-th-src="@{https://image.tmdb.org/t/p/w500{poster_path}(poster_path=${w.poster_path})}"
                                     alt="Card Image">
-                            </a>
+                            <!-- </a> -->
                             <p class="card-dese" data-th-text="${w.overview}"></p>
                             <div class="card-body d-flex flex-column">
                                 <div class="d-flex justify-content-between">
@@ -205,7 +205,8 @@
                                             <button class="button-1" type="submit" data-th-value="${w.id}" name="movieId">Favourite</button>
                                         </div>
                                     <div>
-                                        <a th:href="@{home/{id}(id = ${w.id})}" class="card__link"><i class="bi bi-info-circle"></i>Details</a>
+                                        <!-- <a th:href="@{home/{id}(id = ${w.id})}" class="card__link"><i class="bi bi-info-circle"></i>Details</a> -->
+                                        <a class="card__link"><i class="bi bi-info-circle"></i>Details</a>
                                     </div>
                                 </div>
     

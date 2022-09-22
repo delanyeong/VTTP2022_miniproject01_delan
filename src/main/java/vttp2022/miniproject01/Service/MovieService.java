@@ -81,7 +81,7 @@ public class MovieService {
     public void save (List<Movie> savedMovieList, String name) {
         // movieRepo.save(savedMovieList);
         movieRepo.saveList2(savedMovieList, name);
-        System.out.println("Movie Saved");
+        // System.out.println("Movie Saved"); //commented
     }
 
     //showing your WatchList
